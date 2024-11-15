@@ -59,7 +59,7 @@ try {
         match ($adminAction) {
             '' => (new homeAdminController())->homeAdmin(),
             'listProducts' => (new listProductAdminController())->listProducts(),
-            'detailProducts' => (new listProductAdminController())->detailProducts(),
+            'detailProducts' => (new detailProductAdminController())->detailProducts(),
             'categorys' => (new categorysAdminController())->categorys(),
             'listcustomers' => (new listcustomersAdminController())->listcustomers(),
             'detailcustomer' => (new detailcustomersAdminController())->detailcustomer(),
