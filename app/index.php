@@ -18,6 +18,7 @@ require_once './controllers/admin/listcustomersAdminController.php';
 require_once './controllers/admin/listProductAdminController.php';
 require_once './controllers/admin/odersAdminController.php';
 require_once './controllers/admin/ramAdminController.php';
+require_once './controllers/admin/formaddProductController.php';
 
 // Require toàn bộ file Models admin
 require_once './models/admin/homeAdminModel.php';
@@ -32,6 +33,7 @@ require_once './models/admin/listcustomersAdminModel.php';
 require_once './models/admin/listProductsAdminModel.php';
 require_once './models/admin/odersAdminModel.php';
 require_once './models/admin/ramAdminModel.php';
+require_once './models/admin/formaddProductModel.php';
 
 // Require toàn bộ file Models users
 require_once './models/users/listProductUserModel.php';
@@ -59,6 +61,8 @@ try {
         match ($adminAction) {
             '' => (new homeAdminController())->homeAdmin(),
             'listProducts' => (new listProductAdminController())->listProducts(),
+            'formAddProduct' => (new addProductAdminController())->formAddProduct(),
+            'addProduct' => (new addProductAdminController())->addProduct(),
             'detailProducts' => (new listProductAdminController())->detailProducts(),
             'categorys' => (new categorysAdminController())->categorys(),
             'listcustomers' => (new listcustomersAdminController())->listcustomers(),
