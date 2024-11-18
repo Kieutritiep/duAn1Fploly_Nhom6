@@ -71,7 +71,10 @@ try {
             'detailcomments' => (new detailcommentscommentsAdminController())->detailcomments(),
             'ram' => (new ramAdminController())->ram(),
             'capacity' => (new capacityAdminController())->capacity(),
-            'color' => (new ramAdminController())->color(),
+            'color' => (new colorAdminController())->listColors(),
+            'color/add' => (new colorAdminController())->addColor(),
+            'color/edit' => (new colorAdminController())->editColor(),
+            'color/delete' => (new colorAdminController())->deleteColor(),
             'oders' => (new odersAdminController())->oders(),
             'detailoders' => (new detailOdersAdminController())->detailOders(),
         }; 
@@ -89,6 +92,7 @@ try {
         };
     }
 } catch (Exception $e) {
-    http_response_code($e->getCode());
+    $code = is_int($e-> getCode()) ? $e->getCode() : 500;
+    http_response_code($code);
     echo $e->getMessage();
 }
