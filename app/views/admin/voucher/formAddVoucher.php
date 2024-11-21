@@ -43,32 +43,37 @@
             </div>
             <!-- Main content nơi đổ dữ liệu -->
             <section class="content">
-            <a href="./?act=admin/fromAdd_categorys"><button type="button" class="btn btn-danger mb-4">Thêm danh mục</button></a>
-            <a href="./?act=admin/formAddProduct"><button type="button" class="btn btn-danger mb-4">Thêm danh mục</button></a>
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>TÊN DANH MỤC</th>
-                            <th>HÀNH ĐỘNG</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($categorys as $key => $category) { ?>
-                            <tr>
-                                <td><?php echo ++$key; ?></td>
-                                <td><?php echo $category['ten_danhMuc']; ?></td>
-                                <td>
-                                    <!-- Thêm các hành động như sửa, xóa -->
-                                    <a href="./?act=admin/formUpdate_Category&id=<?php echo $category['id_danhMuc']?> "><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
-                                    <a href="./?act=admin/delete_categorys&id=<?php echo $category['id_danhMuc'] ?>"><button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></a>
-                                    <a href=""><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
-                                    <a href=""><button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></a>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+            <form action="./?act=admin/addVoucher" method="POST" class="p-4 border rounded shadow-sm bg-light">
+                <div class="mb-3">
+                    <label for="ten_chuongTrinh" class="form-label">Tên chương trình</label>
+                    <input type="text" name="ten_chuongTrinh" class="form-control" id="ten_chuongTrinh" placeholder="Nhập tên chương trình">
+                </div>
+                <div class="mb-3">
+                    <label for="moTa" class="form-label">Mô tả</label>
+                    <input type="text" name="moTa" class="form-control" id="moTa" placeholder="Nhập mô tả">
+                </div>
+                <div class="mb-3">
+                    <label for="soTienGiamGia" class="form-label">Số tiền giảm giá</label>
+                    <input type="text" name="soTienGiamGia" class="form-control" id="soTienGiamGia" placeholder="Nhập số tiền giảm giá">
+                </div>
+                <div class="mb-3">
+                    <label for="soTienToiThieu" class="form-label">Số tiền tối thiểu</label>
+                    <input type="text" name="soTienToiThieu" class="form-control" id="soTienToiThieu" placeholder="Nhập số tiền tối thiểu">
+                </div>
+                <div class="mb-3">
+                    <label for="trangThai" class="form-label">Trạng thái</label>
+                    <input type="text" name="trangThai" class="form-control" id="trangThai" placeholder="Nhập trạng thái">
+                </div>
+                <div class="mb-3">
+                    <label for="ngayBatDau" class="form-label">Ngày bắt đầu</label>
+                    <input type="date" name="ngayBatDau" class="form-control" id="ngayBatDau">
+                </div>
+                <div class="mb-3">
+                    <label for="ngayKetThuc" class="form-label">Ngày kết thúc</label>
+                    <input type="date" name="ngayKetThuc" class="form-control" id="ngayKetThuc">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Thêm Voucher</button>
+            </form>
             </section>
             <!-- /.content nơi đổ dữ liệu-->
         </div>
