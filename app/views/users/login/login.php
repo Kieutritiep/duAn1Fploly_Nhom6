@@ -14,6 +14,15 @@
     .account{
             margin-top: 20px;
     }
+.wrapper {
+    position: relative;
+    width: 780px;
+    height: 560px;
+    background: transparent;
+    background: #081b29;
+    overflow: hidden;
+    border: 2px solid #0ef;
+}
 </style>
 <body>
     <div class="" style="background-color: #081B29;">
@@ -56,17 +65,17 @@
 </header>
     <!-- end header -->
     <div class="container1">
-    <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" style="width:450px;height:450px">
+    <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" style="width:450px;height:500px">
         <div class="wrapper">
             <span class="bg-animate"></span>
             <span class="bg-animate2"></span>
             <!-- form đăng nhập -->
             <div class="form-box login">
                 <h2 class="animation" style="--i:0; --j:27">Đăng nhập</h2>
-                <form action="">
+                <form action="./?act=login" method="POST">
                     <div class="input-box animation" style="--i:1; --j:28">
-                        <input type="text" id="username" name="username" placeholder=" ">
-                        <label for="username">Tên đăng nhập</label>
+                        <input type="text" id="email" name="email" placeholder=" ">
+                        <label for="email">Email</label>
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <div class="input-box animation" style="--i:2; --j:29">
@@ -91,15 +100,20 @@
             <!-- form đăng kí -->
             <div class="form-box register">
                 <h2 class="animation" style="--i:17; --j:4">Đăng kí</h2>
-                <form action="">
+                <form action="./?act=register" method="POST">
                     <div class="input-box animation"  style="--i:18;">
                         <input type="text" id="username" name="username" placeholder=" ">
                         <label for="username">Tên đăng nhập</label>
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <div class="input-box animation"  style="--i:19;  --j:1;">
-                        <input type="text" id="username" name="username" placeholder=" ">
-                        <label for="username">Email</label>
+                        <input type="text" id="email" name="email" placeholder=" ">
+                        <label for="email">Email</label>
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="input-box animation"  style="--i:19;  --j:1;">
+                        <input type="text" id="phone" name="phone" placeholder=" ">
+                        <label for="phone">Số điện thoại</label>
                         <i class="fa-solid fa-envelope"></i>
                     </div>
                    
@@ -109,8 +123,8 @@
                         <i class="fa-solid fa-lock"></i>
                     </div>
                     <div class="input-box animation"  style="--i:21; --j:3;">
-                        <input type="password" id="password" name="password" placeholder=" ">
-                        <label for="password">Nhập lại mật khẩu</label>
+                        <input type="repassword" id="password" name="repassword" placeholder=" ">
+                        <label for="repassword">Nhập lại mật khẩu</label>
                         <i class="fa-solid fa-lock"></i>
                     </div>
                     <button type="submit" class="btn animation"  style="--i:22; --j:4">Đăng kí</button>

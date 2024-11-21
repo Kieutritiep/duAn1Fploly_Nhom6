@@ -72,6 +72,10 @@
                             </td>
                             <td class="align-middle"><?php echo $product['gia'] ?></td>
                             <td class="align-middle"><?php echo $product['ram'] ?></td>
+                            <td class="align-middle"><?php echo $product['mauSac'] ?></td>
+                            <td class="align-middle"><?php echo $product['dungLuong'] ?></td>
+
+       
                             <td class="align-middle"><?php echo $product['ten_mauSac'] ?></td>
                             <td class="align-middle"><?php echo $product['dungLuong'] ?></td>
                             <td class="align-middle">

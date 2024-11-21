@@ -2,6 +2,25 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
+          <div class="dropdown">
+          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <?php
+                if(isset($_SESSION['ten_khachHang'])){
+                  ?>
+                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                      <li><a class="dropdown-item" href="./?act=accountManagement">Quản lý tài khoản</a></li>
+                      <li><a class="dropdown-item" href="./?act=logout"onclick="confirm('bạn có muốn đăng xuất không')">Đăng xuất</a></li>
+                  </ul>
+                  <?php
+            }?>
+          </div>
+        </div>
+        <div class="info">
+          <span class="d-block text-white">
+            <?php echo '<p class="text-center">Chào Admin '. $_SESSION['ten_khachHang'].'</p>'; ?>
+      </span>
+        </div>
+      </div>
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
@@ -106,6 +125,13 @@
                   <p>Danh mục sản phẩm</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="./?act=admin/fromAdd_categorys" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm danh mục</p>
+                </a>
+              </li>
+
             </ul>
           </li>
           <li class="nav-item">
@@ -245,12 +271,16 @@
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-plus-square"></i>
               <p>
+                Quản lý voucher
                 Extras
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="./?act=admin/listVoucher" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Danh sách voucher</p>
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>

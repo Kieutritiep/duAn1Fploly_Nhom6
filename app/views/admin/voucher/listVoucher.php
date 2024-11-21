@@ -43,27 +43,36 @@
             </div>
             <!-- Main content nơi đổ dữ liệu -->
             <section class="content">
-            <a href="./?act=admin/fromAdd_categorys"><button type="button" class="btn btn-danger mb-4">Thêm danh mục</button></a>
-            <a href="./?act=admin/formAddProduct"><button type="button" class="btn btn-danger mb-4">Thêm danh mục</button></a>
+            <a href="./?act=admin/formAddVoucher"><button type="button" class="btn btn-danger mb-4">Thêm Voucher</button></a>
                 <table class="table table-bordered table-striped">
-                    <thead>
+                    <thead class="text-center">
                         <tr>
                             <th>STT</th>
-                            <th>TÊN DANH MỤC</th>
-                            <th>HÀNH ĐỘNG</th>
+                            <th>TÊN CHƯƠNG TRÌNH</th>
+                            <th>MÔ TẢ</th>
+                            <th>SỐ TIỀN GIẢM</th>
+                            <th>SỐ TIỀN TỐI THIỂU</th>
+                            <th>TRẠNG THÁI</th>
+                            <th>NGÀY BẮT ĐẦU</th>
+                            <th>NGÀY KẾT THÚC</th>
+                            <th>THAO TÁC</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($categorys as $key => $category) { ?>
+                        <?php foreach ($vouchers as $key => $voucher) { ?>
                             <tr>
                                 <td><?php echo ++$key; ?></td>
-                                <td><?php echo $category['ten_danhMuc']; ?></td>
+                                <td><?php echo $voucher['ten_chuongTrinh']; ?></td>
+                                <td><?php echo $voucher['moTa']; ?></td>
+                                <td><?php echo $voucher['soTienGiamGia']; ?></td>
+                                <td><?php echo $voucher['soTienToiThieu']; ?></td>
+                                <td><?php echo $voucher['trangThai']; ?></td>
+                                <td><?php echo $voucher['ngayBatDau']; ?></td>
+                                <td><?php echo $voucher['ngayKetThuc']; ?></td>
                                 <td>
                                     <!-- Thêm các hành động như sửa, xóa -->
-                                    <a href="./?act=admin/formUpdate_Category&id=<?php echo $category['id_danhMuc']?> "><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
-                                    <a href="./?act=admin/delete_categorys&id=<?php echo $category['id_danhMuc'] ?>"><button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></a>
-                                    <a href=""><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
-                                    <a href=""><button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></a>
+                                    <a href="./?act=admin/formUpdateVoucher&id=<?php echo $voucher['id_giamGia']?>"><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
+                                    <a href="./?act=admin/deleteVoucher&id=<?php echo $voucher['id_giamGia']?>" ><button class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa voucher này?');"><i class="fa-solid fa-trash"></i></button></a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -73,6 +82,4 @@
             <!-- /.content nơi đổ dữ liệu-->
         </div>
         <!-- /.content-wrapper -->
-        <?php 
-    require_once $_SERVER['DOCUMENT_ROOT'] .'/baseDuanpoly/app/views/admin/layout/footter.php';
-?>
+        <?php require_once $_SERVER['DOCUMENT_ROOT'] .'/baseDuanpoly/app/views/admin/layout/footter.php';?>
