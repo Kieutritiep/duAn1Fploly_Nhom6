@@ -46,6 +46,8 @@
             <h4 class="text-center mt-4 ">FORM THÊM SẢN PHẨM</h4>
                 <div class="container mt-5">
                     <form action="./?act=admin/addProduct" method="POST" enctype="multipart/form-data">
+                <div class="container mt-5">
+                <form action="./?act=admin/addProduct" method="POST" enctype="multipart/form-data">
                         <table class="table table-bordered">
                             <tbody id="imageFields">
                                 <tr>
@@ -63,6 +65,14 @@
                                                 </option>
                                             <?php } ?>
                                         </select>
+                                    <select class="form-select" name="category" id="category" required>
+                                        <option value="">Chọn danh mục</option>
+                                        <?php foreach ($categorys as $category) {?>
+                                            <option value="<?php echo $category['id_danhMuc'];?>">
+                                                <?php echo $category['ten_danhMuc'];?>
+                                            </option>
+                                        <?php }?>
+                                    </select>
                                     </td>
                                 </tr>
                                 <tr>
@@ -91,6 +101,11 @@
                                                     <?php echo $color['ten_mauSac'];?>
                                                 </option>
                                             <?php } ?>
+                                    <td><label for="color">Màu sắc</label></td>
+                                    <td>
+                                        <select class="form-select" name="color" id="color">
+                                            <option value="" hidden>Chọn màu</option>
+                                            <option value="xanh">Xanh</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -104,6 +119,9 @@
                                                     <?php echo $capacity['dungLuong'];?>
                                                 </option>
                                             <?php } ?>
+                                        <select class="form-select" name="storage" id="storage">
+                                            <option value="" hidden>Chọn dung lượng</option>
+                                            <option value="128GB">128GB</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -117,6 +135,9 @@
                                                     <?php echo $ram['ram'];?>
                                                 </option>
                                             <?php } ?>
+                                        <select class="form-select" name="ram" id="ram">
+                                            <option value="" hidden>Chọn RAM</option>
+                                            <option value="16GB">16GB</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -137,6 +158,11 @@
                                         <option value="trang chủ">Trang Chủ</option>
                                         <option value="sản phẩm mới ra mắt">Sản phẩm mới ra mắt</option>
                                         <option value="sản phẩm cũ">Sản phẩm cũ</option>
+                                    <select class="form-select" name="status" id="status">
+                                        <option value="" hidden>Chọn trạng thái</option>
+                                        <option value="home">Trang Chủ</option>
+                                        <option value="new">Sản phẩm mới ra mắt</option>
+                                        <option value="old">Sản phẩm cũ</option>
                                     </select>
                                 </td>
                             </tr>
@@ -165,5 +191,25 @@
         <?php 
             require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/admin/layout/footter.php';
         ?>
+        <script>
+            function addImageField() {
+                const imageFields = document.getElementById('imageFields'); // Lấy <tbody> chứa các <tr>
+                const newRow = document.createElement('tr'); // Tạo một dòng <tr> mới
+                newRow.innerHTML = `
+                    <td><label for="subImage">Nhập ảnh phụ</label></td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <input type="file" class="form-control" name="subImage[]">
+                            <button type="button" class="btn btn-danger ms-2" onclick="removeImageField(this)">-</button>
+                        </div>
+                    </td>
+                `;
+                imageFields.appendChild(newRow); // Thêm dòng mới vào <tbody>
+            }
+
+            function removeImageField(button) {
+                button.closest('tr').remove(); // Xóa dòng hiện tại
+            }
+        </script>
     </div>
 </body>

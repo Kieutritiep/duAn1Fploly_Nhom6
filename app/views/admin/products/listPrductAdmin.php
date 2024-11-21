@@ -75,7 +75,9 @@
                             <td class="align-middle"><?php echo $product['mauSac'] ?></td>
                             <td class="align-middle"><?php echo $product['dungLuong'] ?></td>
 
-                            
+       
+                            <td class="align-middle"><?php echo $product['ten_mauSac'] ?></td>
+                            <td class="align-middle"><?php echo $product['dungLuong'] ?></td>
                             <td class="align-middle">
                             <a href=""><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
                             <button type="submit" class="btn btn-info"><i class="fa-solid fa-eye"></i></button>
