@@ -76,6 +76,9 @@ try {
             'getAllCapacity' => (new addProductAdminController())->getAllCapacity(),
             'getAllColor' => (new addProductAdminController())->getAllColor(),
             'fromAdd_categorys' => (new categorysAdminController())->fromAddcategorys(),
+            'formAddProduct' => (new addProductAdminController())->formAddProduct(),
+            'addProduct' => (new addProductAdminController())->addProduct(),
+            'detailProducts' => (new listProductAdminController())->detailProducts(),
             'categorys' => (new categorysAdminController())->categorys(),
             'delete_categorys' => (new categorysAdminController())->deleteCagorys(),
             'add_Category' => (new categorysAdminController())->addCategory(),
@@ -89,8 +92,19 @@ try {
             'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
             default => throw new Exception('404 Not Found', 404),
         };
+            'detailcustomer' => (new detailcustomersAdminController())->detailcustomer(),
+            'comments' => (new commentsAdminController())->comments(),
+            'detailcomments' => (new detailcommentscommentsAdminController())->detailcomments(),
+            'ram' => (new ramAdminController())->ram(),
+            'capacity' => (new capacityAdminController())->capacity(),
+            'color' => (new colorAdminController())->listColors(),
+            'color/add' => (new colorAdminController())->addColor(),
+            'color/edit' => (new colorAdminController())->editColor(),
+            'color/delete' => (new colorAdminController())->deleteColor(),
+            'oders' => (new odersAdminController())->oders(),
+            'detailoders' => (new detailOdersAdminController())->detailOders(),
+        }; 
     } else {
-        // Điều hướng user
         match ($act) {
             '/' => (new listProductUsersController())->listProductUser(),
             'detailProduct' => (new detailProductController())->detailProduct(),
@@ -109,6 +123,8 @@ try {
     }
 } catch (Exception $e) {
     http_response_code($e->getCode() ?: 500);
+    $code = is_int($e-> getCode()) ? $e->getCode() : 500;
+    http_response_code($code);
     echo $e->getMessage();
     exit();
 }

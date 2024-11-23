@@ -44,6 +44,7 @@
             <!-- Main content nơi đổ dữ liệu -->
             <section class="content">
             <a href="./?act=admin/fromAdd_categorys"><button type="button" class="btn btn-danger mb-4">Thêm danh mục</button></a>
+            <a href="./?act=admin/formAddProduct"><button type="button" class="btn btn-danger mb-4">Thêm danh mục</button></a>
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -61,6 +62,8 @@
                                     <!-- Thêm các hành động như sửa, xóa -->
                                     <a href="./?act=admin/formUpdate_Category&id=<?php echo $category['id_danhMuc']?> "><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
                                     <a href="./?act=admin/delete_categorys&id=<?php echo $category['id_danhMuc'] ?>"><button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></a>
+                                    <a href=""><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
+                                    <a href=""><button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></a>
                                 </td>
                             </tr>
                         <?php } ?>
