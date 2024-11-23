@@ -31,12 +31,12 @@ class voucherModel{
     }
     public function addVoucher($ten_chuongTrinh, $moTa, $soTienGiamGia, $soTienToiThieu, $trangThai, $ngayBatDau, $ngayKetThuc){
         try{
-            $sql = "INSERT INTO tb_giamgia(ten_chuongTrinh,moTa,soTienGiamGia,soTienToiThieu,trangThai,ngayBatDau,ngayKetThuc)
-            VALUES(:ten_chuongTrinh, :moTa, :soTienGiamGia, :soTienToiThieu, :trangThai, :ngayBatDau, :ngayKetThuc)";
+            $sql = "INSERT INTO tb_giamgia(ten_chuongTrinh,ma_giamGia,soTienGiamGia,soTienToiThieu,trangThai,ngayBatDau,ngayKetThuc)
+            VALUES(:ten_chuongTrinh, :ma_giamGia, :soTienGiamGia, :soTienToiThieu, :trangThai, :ngayBatDau, :ngayKetThuc)";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([
                 ':ten_chuongTrinh' => $ten_chuongTrinh,
-                ':moTa' => $moTa,
+                ':ma_giamGia' => $moTa,
                 ':soTienGiamGia' => $soTienGiamGia,
                 ':soTienToiThieu' => $soTienToiThieu,
                 ':trangThai' => $trangThai,
@@ -66,12 +66,12 @@ class voucherModel{
     public function updateVoucherModel($id_giamGia, $ten_chuongTrinh, $moTa, $soTienGiamGia, $soTienToiThieu, $trangThai, $ngayBatDau, $ngayKetThuc){
         try{
             $sql = "UPDATE tb_giamgia 
-            SET ten_chuongTrinh = :ten_chuongTrinh ,moTa = :moTa ,soTienGiamGia = :soTienGiamGia ,soTienToiThieu = :soTienToiThieu,trangThai = :trangThai, ngayBatDau = :ngayBatDau,ngayKetThuc = :ngayKetThuc
+            SET ten_chuongTrinh = :ten_chuongTrinh ,ma_giamGia = :ma_giamGia ,soTienGiamGia = :soTienGiamGia ,soTienToiThieu = :soTienToiThieu,trangThai = :trangThai, ngayBatDau = :ngayBatDau,ngayKetThuc = :ngayKetThuc
             WHERE id_giamGia = :id_giamGia";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([
                 ':ten_chuongTrinh' => $ten_chuongTrinh,
-                ':moTa' => $moTa,
+                ':ma_giamGia' => $moTa,
                 ':soTienGiamGia' => $soTienGiamGia,
                 ':soTienToiThieu' => $soTienToiThieu,
                 ':trangThai' => $trangThai,

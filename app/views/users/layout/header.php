@@ -51,14 +51,14 @@
         </form>
         <div class="dropdown">
         <?php 
-        // if (!isset($_SESSION['phanQuyen']) || $_SESSION['phanQuyen'] !== 'user') {
-        //     header('location: ./?act=formLogin');
-        //     exit();
-        // }
-        // if(!isset($_SESSION['ten_khachHang'])){
-        //     header('location: ./');
-        //     exit();
-        // }
+        if (!isset($_SESSION['phanQuyen']) || $_SESSION['phanQuyen'] !== 'user') {
+            header('location: ./?act=formLogin');
+            exit();
+        }
+        if(!isset($_SESSION['ten_khachHang'])){
+            header('location: ./');
+            exit();
+        }
         if (isset($_SESSION['ten_khachHang'])) { 
             $fullName = $_SESSION['ten_khachHang'];
             $nameParts = explode(' ', $fullName);
