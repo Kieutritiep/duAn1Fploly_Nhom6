@@ -95,6 +95,7 @@ try {
             '/' => (new listProductUsersController())->listProductUser(),
             'detailProduct' => (new detailProductController())->detailProduct(),
             'commentProduct' => (new commentProductController())->commentProductUser(),
+            // 'detailProduct' => (new detailProductController())->voucherProduct(),
             'formLogin' => (new loginController())->formlogin(),
             'login' => (new loginController())->login(),
             'register' => (new registerController())->register(),

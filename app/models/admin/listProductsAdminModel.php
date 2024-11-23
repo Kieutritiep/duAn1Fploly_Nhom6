@@ -9,7 +9,6 @@ class listProductAdminModel{
             $sql = "SELECT 
             tb_sanPham.id_sanPham,
             tb_sanPham.ten_sanPham,
-            MAX(tb_sanPham.gia) AS gia,
             MAX(tb_sanPham.moTa) AS moTa,
             MAX(tb_anh.file_anh) AS file_anh,
             GROUP_CONCAT(DISTINCT tb_ram.ram) AS ram,

@@ -54,22 +54,22 @@ class addProductModel {
              return []; 
         }
     }
-    public function addProductModels($nameProduct, $category, $price, $colors, $rams, $description, $quantity, $capacities, $status, $display, $file_save, $file_subImage) {
+    public function addProductModels($nameProduct, $category, $priceProducts, $colors, $rams, $description, $quantity, $capacities, $status, $display, $file_save, $file_subImage) {
         try {
             $this->conn->beginTransaction();
     
             // Bước 1: Thêm thông tin sản phẩm chính vào bảng tb_sanPham
             $sql = "INSERT INTO tb_sanPham 
-                    (ten_sanPham, id_danhMuc, gia, moTa, trangThaiTonKho, trangThaiSanPham, hienThi) 
+                    (ten_sanPham, id_danhMuc, moTa, soLuong, trangThaiSanPham, hienThi) 
                     VALUES 
-                    (:ten_sanPham, :id_danhMuc, :gia, :moTa, :trangThaiTonKho, :trangThaiSanPham, :hienThi)";
+                    (:ten_sanPham, :id_danhMuc, :moTa, :soLuong, :trangThaiSanPham, :hienThi)";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([
                 ':ten_sanPham' => $nameProduct,
                 ':id_danhMuc' => $category,
-                ':gia' => $price,
+                // ':gia' => $price,
                 ':moTa' => $description,
-                ':trangThaiTonKho' => $quantity,
+                ':soLuong' => $quantity,
                 ':trangThaiSanPham' => $status,
                 ':hienThi' => $display,
             ]);
@@ -77,27 +77,27 @@ class addProductModel {
             // Lấy ID của sản phẩm vừa thêm
             $productID = $this->conn->lastInsertId();
     
-            // Bước 2: Thêm các biến thể vào bảng tb_sanPhamBienThe
             if (is_array($colors)) {
                 foreach ($colors as $colorID) {
                     foreach ($rams as $ramID) {
-                        foreach ($capacities as $capacityID) {
-                            // Insert vào bảng tb_sanPhamBiếnThe
-                            $sql = "INSERT INTO tb_bienthesanpham (id_sanPham, id_mauSac, id_dungLuong, id_ram) 
-                                    VALUES (:id_sanPham, :id_mauSac, :id_dungLuong, :id_ram)";
-                            $stmt = $this->conn->prepare($sql);
-                            $stmt->execute([
-                                ':id_sanPham' => $productID, // id_sanPham lấy từ bảng tb_sanPham
-                                ':id_mauSac' => $colorID,
-                                ':id_dungLuong' => $capacityID,
-                                ':id_ram' => $ramID
-                            ]);
+                        foreach ($capacities as $capacityID){
+                            foreach($priceProducts as $priceProduct){
+                                // Insert vào bảng tb_sanPhamBiếnThe
+                                $sql = "INSERT INTO tb_bienthesanpham (id_sanPham, id_mauSac, id_dungLuong, id_ram,giaBienThe) 
+                                VALUES (:id_sanPham, :id_mauSac, :id_dungLuong, :id_ram,:giaBienThe)";
+                                $stmt = $this->conn->prepare($sql);
+                                $stmt->execute([
+                                    ':id_sanPham' => $productID, 
+                                    ':id_mauSac' => $colorID,
+                                    ':id_dungLuong' => $capacityID,
+                                    ':id_ram' => $ramID,
+                                    ':giaBienThe' => $priceProduct,
+                                ]);
+                            }
                         }
                     }
                 }
             }
-            
-
             $sql = "INSERT INTO tb_anh (id_sanPham, file_anh, loaiAnh) VALUES (:id_sanPham, :file_anh, :loaiAnh)";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([
@@ -105,8 +105,6 @@ class addProductModel {
                 ':file_anh' => $file_save,
                 ':loaiAnh' => 'chinh',
             ]);
-    
-
             if (is_array($file_subImage)) {
                 foreach ($file_subImage as $image) {
                     $sql = "INSERT INTO tb_anh (id_sanPham, file_anh, loaiAnh) VALUES (:id_sanPham, :file_anh, :loaiAnh)";
@@ -118,7 +116,6 @@ class addProductModel {
                     ]);
                 }
             }
-    
             $this->conn->commit();
             return true;
         } catch (PDOException $e) {
