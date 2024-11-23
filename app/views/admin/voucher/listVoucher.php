@@ -49,7 +49,7 @@
                         <tr>
                             <th>STT</th>
                             <th>TÊN CHƯƠNG TRÌNH</th>
-                            <th>MÔ TẢ</th>
+                            <th>MÃ GIẢM GIÁ</th>
                             <th>SỐ TIỀN GIẢM</th>
                             <th>SỐ TIỀN TỐI THIỂU</th>
                             <th>TRẠNG THÁI</th>
@@ -63,7 +63,7 @@
                             <tr>
                                 <td><?php echo ++$key; ?></td>
                                 <td><?php echo $voucher['ten_chuongTrinh']; ?></td>
-                                <td><?php echo $voucher['moTa']; ?></td>
+                                <td><?php echo $voucher['ma_giamGia']; ?></td>
                                 <td><?php echo $voucher['soTienGiamGia']; ?></td>
                                 <td><?php echo $voucher['soTienToiThieu']; ?></td>
                                 <td><?php echo $voucher['trangThai']; ?></td>

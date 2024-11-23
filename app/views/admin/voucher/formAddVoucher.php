@@ -61,8 +61,13 @@
                     <input type="text" name="soTienToiThieu" class="form-control" id="soTienToiThieu" placeholder="Nhập số tiền tối thiểu">
                 </div>
                 <div class="mb-3">
-                    <label for="trangThai" class="form-label">Trạng thái</label>
-                    <input type="text" name="trangThai" class="form-control" id="trangThai" placeholder="Nhập trạng thái">
+                    <label for="trangThai">Trạng thái voucher:</label>
+                    <select name="trangThai" id="trangThai">
+                        <option value="0">Chưa sử dụng</option>
+                        <option value="1">Đang sử dụng</option>
+                        <option value="2">Đã hết hạn</option>
+                        <option value="3">Đã được áp dụng</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="ngayBatDau" class="form-label">Ngày bắt đầu</label>

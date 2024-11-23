@@ -33,7 +33,7 @@
                 $moTa = $_POST['moTa'];
                 $soTienGiamGia = $_POST['soTienGiamGia'];
                 $soTienToiThieu = $_POST['soTienToiThieu'];
-                $trangThai = $_POST['soTienToiThieu'];
+                $trangThai = (int)$_POST['trangThai']; 
                 $ngayBatDau = $_POST['ngayBatDau'];
                 $ngayKetThuc = $_POST['ngayKetThuc'];
                 if($this->listVoucher->addVoucher($ten_chuongTrinh, $moTa, $soTienGiamGia, $soTienToiThieu, $trangThai, $ngayBatDau, $ngayKetThuc)){
@@ -52,24 +52,25 @@
         public function updateVoucher(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $ten_chuongTrinh = $_POST['ten_chuongTrinh'];
-                $moTa = $_POST['moTa'];
+                $moTa = $_POST['ma_giamGia'];
                 $soTienGiamGia = $_POST['soTienGiamGia'];
                 $soTienToiThieu = $_POST['soTienToiThieu'];
                 $trangThai = $_POST['soTienToiThieu'];
                 $ngayBatDau = $_POST['ngayBatDau'];
                 $ngayKetThuc = $_POST['ngayKetThuc'];
                 $id_giamGia = $_POST['id_giamGia'];
+                // var_dump($_POST);die();
                 if($this->listVoucher->updateVoucherModel($id_giamGia,$ten_chuongTrinh, $moTa, $soTienGiamGia, $soTienToiThieu, $trangThai, $ngayBatDau, $ngayKetThuc)){
-                    echo "<script>
-                            alert('Cập nhật voucher thành công');
-                            window.location.href = './?act=admin/listVoucher';
-                        </script>";
+                    // echo "<script>
+                    //         alert('Cập nhật voucher thành công');
+                    //         window.location.href = './?act=admin/listVoucher';
+                    //     </script>";
 
                 }else{
-                    echo "<script>
-                            alert('Cập nhật voucher thất bại');
-                            window.location.href = './?act=admin/listVoucher';
-                        </script>";
+                    // echo "<script>
+                    //         alert('Cập nhật voucher thất bại');
+                    //         window.location.href = './?act=admin/listVoucher';
+                    //     </script>";
                 }
             }
         }

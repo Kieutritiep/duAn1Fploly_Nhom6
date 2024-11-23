@@ -53,11 +53,11 @@
                     value="<?php echo $voucher['ten_chuongTrinh'] ?>">
                 </div>
                 <div class="mb-3">
-                    <label for="moTa" class="form-label">Mô tả</label>
-                    <input type="text" name="moTa" 
-                    class="form-control" id="moTa" 
+                    <label for="ma_giamGia" class="form-label">Mô tả</label>
+                    <input type="text" name="ma_giamGia" 
+                    class="form-control" id="ma_giamGia" 
                     placeholder="Nhập mô tả"
-                    value="<?php echo $voucher['moTa'] ?>">
+                    value="<?php echo $voucher['ma_giamGia'] ?>">
                 </div>
                 <div class="mb-3">
                     <label for="soTienGiamGia" class="form-label">Số tiền giảm giá</label>
@@ -74,11 +74,13 @@
                     value="<?php echo $voucher['soTienToiThieu'] ?>">
                 </div>
                 <div class="mb-3">
-                    <label for="trangThai" class="form-label">Trạng thái</label>
-                    <input type="text" name="trangThai" 
-                    class="form-control" id="trangThai" 
-                    placeholder="Nhập trạng thái"
-                    value="<?php echo $voucher['trangThai'] ?>">
+                <label for="trangThai">Trạng thái voucher:</label>
+                    <select name="trangThai" id="trangThai" value="<?php echo $voucher['trangThai'] ?>">
+                        <option value="0">Chưa sử dụng</option>
+                        <option value="1">Đang sử dụng</option>
+                        <option value="2">Đã hết hạn</option>
+                        <option value="3">Đã được áp dụng</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="ngayBatDau" class="form-label">Ngày bắt đầu</label>
