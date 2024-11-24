@@ -101,6 +101,7 @@ try {
             'register' => (new registerController())->register(),
             'logout' => (new loginController())->logout(),
             'cart' => (new cartUserController())->cartUser(),
+            'addCart' => (new cartUserController())->addCart(),
             'detailCart' => (new detailcartUserController())->detailCartUser(),
             'cartEmpty' => (new cartEmptyUserController())->cartEmpty(),
             'infomationUser' => (new infomationUserController())->infomationUser(),
