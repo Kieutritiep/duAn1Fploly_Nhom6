@@ -9,5 +9,7 @@
             // var_dump($products);die();
             // print_r($products);die();
             require_once './views/users/products/listProductUser.php';
+            // require_once './views/users/layout/header.php';
         }
+        
     }
