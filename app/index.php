@@ -5,6 +5,14 @@ session_start(); // Khởi động session
 require_once './commons/env.php'; // Khai báo biến môi trường
 require_once './commons/function.php'; // Hàm hỗ trợ
 
+try{
+    $dsn = "mysql:host=" . DB_HOST . ";post=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    $db = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}catch(PDOException $e){
+    die("ket noi that bai: ".$e->getMessage());
+}
+
 // Require tất cả file Controllers admin
 require_once './controllers/admin/homeAdmimController.php';
 require_once './controllers/admin/capacityAdminController.php';
@@ -79,7 +87,8 @@ try {
             'categorys' => (new categorysAdminController())->categorys(),
             'delete_categorys' => (new categorysAdminController())->deleteCagorys(),
             'add_Category' => (new categorysAdminController())->addCategory(),
-            'listcustomers' => (new listcustomersAdminController())->listcustomers(),
+            'listcustomers' => (new ListCustomersAdminController(new listcustomersAdminModel($db)))->listcustomer(),
+            'editcustomers' => (new ListCustomersAdminController(new listcustomersAdminModel($db)))->edit($_GET['id']),
             'listVoucher' => (new listVoucherAdminController())->listVoucher(),
             'formAddVoucher' => (new listVoucherAdminController())->formAddVoucher(),
             'addVoucher' => (new listVoucherAdminController())->addVoucher(),
@@ -87,6 +96,10 @@ try {
             'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
             'formUpdateVoucher' => (new listVoucherAdminController())->formUpdateVoucher(),
             'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
+            'color' => (new colorAdminController())->listColors(),
+            'color/add' => (new colorAdminController())->addColor(),
+            'color/edit' => (new colorAdminController())->editColor(),
+            'color/delete' => (new colorAdminController())->deleteColor(),
             default => throw new Exception('404 Not Found', 404),
         };
     } else {
@@ -107,8 +120,9 @@ try {
             default => throw new Exception('404 Not Found', 404),
         };
     }
-} catch (Exception $e) {
-    http_response_code($e->getCode() ?: 500);
+}catch (Exception $e) {
+    $code = is_int($e-> getCode()) ? $e->getCode() : 500;
+    http_response_code($code);
     echo $e->getMessage();
-    exit();
 }
+
