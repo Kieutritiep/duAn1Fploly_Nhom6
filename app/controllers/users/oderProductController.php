@@ -17,9 +17,11 @@
                 $pay = $_POST['pay'];
                 $totalPrice = $_POST['totalPrice'];
                 $idProduct = $_POST['idProduct'];
+                $quantity = $_POST['quantity'];
+                $price = $_POST['price'];
                 $isDefault = $_POST['isDefault'] ?? 0;
-                var_dump($_POST);die();
-                $result = $this->orderProduct->olderProducts($id_khachHang,$gender, $name, $phone, $city, $district, $commune, $detailAddress, $isDefault,$voucher,$pay,$totalPrice,$idProduct);
+                // print_r($_POST);die();
+                $result = $this->orderProduct->olderProducts($id_khachHang,$gender, $name, $phone, $city, $district, $commune, $detailAddress, $isDefault,$voucher,$pay,$totalPrice,$idProduct,$price,$quantity);
                 if($result){
                     echo "Đặt hàng thành công";
                 }else{

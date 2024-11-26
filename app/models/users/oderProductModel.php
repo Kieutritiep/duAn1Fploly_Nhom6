@@ -6,7 +6,7 @@ class orderProductModel {
         $this->conn = connectDB(); // Kết nối đến cơ sở dữ liệu
     }
 
-    public function olderProducts($id_khachHang, $gender, $name, $phone, $city, $district, $commune, $detailAddress, $isDefault, $voucher, $pay, $totalPrice,$idProduct) {
+    public function olderProducts($id_khachHang, $gender, $name, $phone, $city, $district, $commune, $detailAddress, $isDefault, $voucher, $pay, $totalPrice, $idProduct, $price, $quantity) {
         try {
             if ($gender === 'Anh') {
                 $gender = 'Nam';
@@ -30,33 +30,27 @@ class orderProductModel {
                 ':hoVaTen' => $name,
                 ':isDefault' => $isDefault
             ]);
+
+            $idAddress = $this->conn->lastInsertId(); // ID của địa chỉ vừa thêm
+
             $sqlCheckMDH = "SELECT hauTo FROM madonhang WHERE tienTo = 'DH' ORDER BY hauTo DESC LIMIT 1";
             $stmtCheckMDH = $this->conn->prepare($sqlCheckMDH);
             $stmtCheckMDH->execute();
             $maDonHang = $stmtCheckMDH->fetch();
-            if ($maDonHang) {
-                $hauTo = $maDonHang['hauTo'] + 1;
-            } else {
-                $hauTo = 1;
-            }
-            $tienTo = 'DH';
-            $sqlMDH = "INSERT INTO madonhang (tienTo, hauTo) VALUES (:tienTo, :hauTo)";
+            $hauTo = $maDonHang ? $maDonHang['hauTo'] + 1 : 1;
+            $maDonHangCode = 'DH' . str_pad($hauTo, 4, '0', STR_PAD_LEFT); 
+            $sqlMDH = "INSERT INTO madonhang (tienTo, hauTo) VALUES ('DH', :hauTo)";
             $stmtMDH = $this->conn->prepare($sqlMDH);
-            $stmtMDH->execute([
-                ':tienTo' => $tienTo,
-                ':hauTo' => $hauTo
-            ]);
-            $maDonHangValue = $this->conn->lastInsertId();
-            $maDonHangCode = $tienTo . str_pad($hauTo, 4, '0', STR_PAD_LEFT); 
-            $idAddress = $this->conn->lastInsertId();
+            $stmtMDH->execute([':hauTo' => $hauTo]);
+            $maDonHangValue = $this->conn->lastInsertId(); 
             if (empty($voucher)) {
-                $voucher = null;
+                $voucher = null; 
             }
-            $sqlOrder = "INSERT INTO tb_donHang (diaChi, tongTien, id_khachHang, hinhThucThanhToan, ngayDatHang ,trangThai, id_giamGia, id_madonhang)
-                        VALUES (:diaChi, :tongTien, :id_khachHang, :hinhThucThanhToan,NOW(),:trangThai, :id_giamGia, :id_madonhang)";
+            $sqlOrder = "INSERT INTO tb_donHang (diachi_id, tongTien, id_khachHang, hinhThucThanhToan, ngayDatHang ,trangThai, id_giamGia, id_madonhang)
+                        VALUES (:diachi_id, :tongTien, :id_khachHang, :hinhThucThanhToan, NOW(), :trangThai, :id_giamGia, :id_madonhang)";
             $stmtOrder = $this->conn->prepare($sqlOrder);
             $stmtOrder->execute([
-                ':diaChi' => $detailAddress, 
+                ':diachi_id' => $idAddress, 
                 ':tongTien' => $totalPrice,
                 ':id_khachHang' => $id_khachHang,
                 ':hinhThucThanhToan' => $pay,
@@ -64,17 +58,31 @@ class orderProductModel {
                 ':id_giamGia' => $voucher,
                 ':id_madonhang' => $maDonHangValue,
             ]);
-            $idOlder = $this->conn->lastInsertId();
-            $sqlOderDetail = "INSERT INTO tb_chitietdonhang(id_donhang,id_sanPham,soLuong,gia,tongTien)
-                            VALUES (:id_donhang, :id_sanPham, :soLuong, :gia, :tongTien)";
-            $stmtOderDetail = $this->conn->prepare($sqlOderDetail);
-            $stmtOderDetail->execute([
-                ':id_donhang' => $idOlder,
-                ':id_sanPham' => $idProduct,
-                ':soLuong' => $quantity,
-                ':gia' => $price,
-                ':tongTien' => $totalPrice
-            ]);
+            $idOlder = $this->conn->lastInsertId(); 
+            if (is_array($idProduct)) {
+                foreach ($idProduct as $index => $productId) {
+
+                    $stmtOderDetail = $this->conn->prepare("INSERT INTO tb_chitietdonhang(id_donhang, id_sanPham, soLuong, gia, tongTien)
+                                                           VALUES (:id_donhang, :id_sanPham, :soLuong, :gia, :tongTien)");
+                    $stmtOderDetail->execute([
+                        ':id_donhang' => $idOlder,
+                        ':id_sanPham' => (int)$productId,
+                        ':soLuong' => (int)$quantity[$index],
+                        ':gia' => $price[$index], 
+                        ':tongTien' => $price[$index] * $quantity[$index] 
+                    ]);
+                }
+            } else {
+                $stmtOderDetail = $this->conn->prepare("INSERT INTO tb_chitietdonhang(id_donhang, id_sanPham, soLuong, gia, tongTien)
+                                                       VALUES (:id_donhang, :id_sanPham, :soLuong, :gia, :tongTien)");
+                $stmtOderDetail->execute([
+                    ':id_donhang' => $idOlder,
+                    ':id_sanPham' => (int)$idProduct,
+                    ':soLuong' => (int)$quantity,
+                    ':gia' => $price, 
+                    ':tongTien' => $price * $quantity 
+                ]);
+            }
             return true;
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();

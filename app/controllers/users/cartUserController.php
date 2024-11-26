@@ -20,7 +20,7 @@
                 // $quantity = $_POST['quantity'];
                 // $action = $_POST['buyNow'];
                 // $actionAdd = $_POST['addToCart'];
-                var_dump($_POST);die();
+                // var_dump($_POST);die();
                 $addCart = $this->cart->addCartModel($id_sanPham,$capacity,$color,$price,$userID);
                 if($addCart){
                     echo "thêm vào giỏ hàng thành công";
