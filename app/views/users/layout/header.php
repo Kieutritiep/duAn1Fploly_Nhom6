@@ -34,7 +34,7 @@
         <div class="flex-grow-1">
             <ul class="d-flex list-unstyled m-0 justify-content-center">
                 <li class="mx-3">
-                    <a href="#" class="menu-link text-reset text-decoration-none px-3 py-2 d-block">Trang Chủ</a>
+                    <a href="index.php" class="menu-link text-reset text-decoration-none px-3 py-2 d-block">Trang Chủ</a>
                 </li>
                 <li class="mx-3">
                     <a href="#" class="menu-link text-reset text-decoration-none px-3 py-2 d-block">Sản phẩm mới ra mắt</a>
@@ -80,11 +80,7 @@
         </a>
     <?php } ?>
         </div>
-        <a href="./?act=cart&id=<?php 
-            if(isset($_SESSION['id_khachHang'])){
-                echo $_SESSION['id_khachHang'];
-            }
-        ?>" class="position-relative text-reset text-decoration-none">
+        <a href="./?act=cart" class="position-relative text-reset text-decoration-none">
             <i class="fa-solid fa-cart-shopping me-5 fs-4"></i>
             <p class="position-absolute top-0 start-50 translate-middle bg-danger text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 20px; height: 20px; font-size: 12px;">1</p>
         </a>
