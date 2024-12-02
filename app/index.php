@@ -1,10 +1,20 @@
 <?php
-session_start();
-// Require file Common
+session_start(); // Khởi động session
+
+// Require các file cần thiết
 require_once './commons/env.php'; // Khai báo biến môi trường
 require_once './commons/function.php'; // Hàm hỗ trợ
- 
-// Require toàn bộ file Controllers admin
+
+// Kết nối cơ sở dữ liệu
+try {
+    $dsn = "mysql:host=" . DB_HOST . ";post=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    $db = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Kết nối thất bại: " . $e->getMessage());
+}
+
+// Require tất cả file Controllers admin
 require_once './controllers/admin/homeAdmimController.php';
 require_once './controllers/admin/capacityAdminController.php';
 require_once './controllers/admin/categorysAdminController.php';
@@ -18,8 +28,10 @@ require_once './controllers/admin/listcustomersAdminController.php';
 require_once './controllers/admin/listProductAdminController.php';
 require_once './controllers/admin/odersAdminController.php';
 require_once './controllers/admin/ramAdminController.php';
+require_once './controllers/admin/formaddProductController.php';
+require_once './controllers/admin/listVoucherAdminController.php';
 
-// Require toàn bộ file Models admin
+// Require tất cả file Models admin
 require_once './models/admin/homeAdminModel.php';
 require_once './models/admin/capacityAdminModel.php';
 require_once './models/admin/categorysAdminModel.php';
@@ -32,8 +44,10 @@ require_once './models/admin/listcustomersAdminModel.php';
 require_once './models/admin/listProductsAdminModel.php';
 require_once './models/admin/odersAdminModel.php';
 require_once './models/admin/ramAdminModel.php';
+require_once './models/admin/formaddProductModel.php';
+require_once './models/admin/listVoucherAdminModel.php';
 
-// Require toàn bộ file Models users
+// Require tất cả file Models users
 require_once './models/users/listProductUserModel.php';
 require_once './models/users/loginModel.php';
 require_once './models/users/cartUserModel.php';
@@ -41,7 +55,10 @@ require_once './models/users/detailCartModel.php';
 require_once './models/users/cartEmptyModel.php';
 require_once './models/users/informationUserModel.php';
 require_once './models/users/detailProductUserModel.php';
-// Require toàn bộ file Controllers users
+require_once './models/users/registerModel.php';
+require_once './models/users/commentProductUserModel.php'; // Model bình luận người dùng
+
+// Require tất cả file Controllers users
 require_once './controllers/users/listProductUserController.php';
 require_once './controllers/users/loginController.php';
 require_once './controllers/users/cartUserController.php';
@@ -49,42 +66,68 @@ require_once './controllers/users/detailCartController.php';
 require_once './controllers/users/cartEmptyController.php';
 require_once './controllers/users/informationUserController.php';
 require_once './controllers/users/detailProductUserController.php';
-// Route
+require_once './controllers/users/registerController.php';
+require_once './controllers/users/commentProductUserController.php'; // Controller bình luận người dùng
+
+$commentModel = new commentProductUserModel($db); 
+$commentModel = new commentProductUserModel($db);
+$adminCommentModel = new commentsAdminModel($db);
+// Lấy giá trị act từ URL
 $act = $_GET['act'] ?? '/';
-// Điều hướng dựa trên giá trị $act
+
 try {
     if (strpos($act, 'admin/') === 0) {
-        // Điều hướng đến admin
-        $adminAction = substr($act, 6); 
+        // Điều hướng admin
+        $adminAction = substr($act, 6); // Lấy phần sau 'admin/'
         match ($adminAction) {
             '' => (new homeAdminController())->homeAdmin(),
             'listProducts' => (new listProductAdminController())->listProducts(),
             'detailProducts' => (new detailProductAdminController())->detailProducts(),
+            'formAddProduct' => (new addProductAdminController())->formAddProduct(),
+            'addProduct' => (new addProductAdminController())->addProduct(),
+            'getAllram' => (new addProductAdminController())->getAllram(),
+            'getAllCapacity' => (new addProductAdminController())->getAllCapacity(),
+            'color' => (new colorAdminController())->listColors(),
+            'color/add' => (new colorAdminController())->addColor(),
+            'color/edit' => (new colorAdminController())->editColor(),
+            'color/delete' => (new colorAdminController())->deleteColor(),
+            'fromAdd_categorys' => (new categorysAdminController())->fromAddcategorys(),
             'categorys' => (new categorysAdminController())->categorys(),
-            'listcustomers' => (new listcustomersAdminController())->listcustomers(),
-            'detailcustomer' => (new detailcustomersAdminController())->detailcustomer(),
-            'comments' => (new commentsAdminController())->comments(),
-            'detailcomments' => (new detailcommentscommentsAdminController())->detailcomments(),
-            'ram' => (new ramAdminController())->ram(),
-            'capacity' => (new capacityAdminController())->capacity(),
-            'color' => (new ramAdminController())->color(),
-            'oders' => (new odersAdminController())->oders(),
-            'detailoders' => (new detailOdersAdminController())->detailOders(),
-        }; 
+            'delete_categorys' => (new categorysAdminController())->deleteCagorys(),
+            'add_Category' => (new categorysAdminController())->addCategory(),
+            'listcustomers' => (new ListCustomersAdminController(new listcustomersAdminModel($db)))->listcustomer(),
+            'editcustomers' => (new ListCustomersAdminController(new listcustomersAdminModel($db)))->edit($_GET['id']),
+            'listVoucher' => (new listVoucherAdminController())->listVoucher(),
+            'formAddVoucher' => (new listVoucherAdminController())->formAddVoucher(),
+            'addVoucher' => (new listVoucherAdminController())->addVoucher(),
+            'deleteVoucher' => (new listVoucherAdminController())->deleteVoucher(),
+            'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
+            'formUpdateVoucher' => (new listVoucherAdminController())->formUpdateVoucher(),
+            'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
+            'comments' => (new commentsAdminController($adminCommentModel))->listComments(), // Quản lý bình luận
+            'deleteComment' => (new commentsAdminController($adminCommentModel))->deleteComment(),
+            default => throw new Exception('404 Not Found', 404),
+        };
     } else {
-        // điều hướng đến user
+        // Điều hướng user
         match ($act) {
             '/' => (new listProductUsersController())->listProductUser(),
-            'detailProduct' => (new detailProductController())->detailProductUser(), //chi tiết sản phẩm
+            'detailProduct' => (new detailProductController())->detailProduct(),
+            'commentProduct' => (new commentProductUserController($commentModel))->displayComments(),
+            'formLogin' => (new loginController())->formlogin(),
             'login' => (new loginController())->login(),
-            'cart' => (new cartUserController())->cartUser(),  //giỏ hàng
-            'detailCart' => (new detailcartUserController())->detailCartUser(), //chi tiết giỏ hàng
-            'cartEmpty' => (new cartEmptyUserController())->cartEmpty(), //giỏ hàng trống
-            'infomationUser' => (new infomationUserController())->infomationUser(), //Thông tin người dùng
+            'register' => (new registerController())->register(),
+            'logout' => (new loginController())->logout(),
+            'cart' => (new cartUserController())->cartUser(),
+            'detailCart' => (new detailcartUserController())->detailCartUser(),
+            'cartEmpty' => (new cartEmptyUserController())->cartEmpty(),
+            'infomationUser' => (new infomationUserController())->infomationUser(),
             default => throw new Exception('404 Not Found', 404),
         };
     }
 } catch (Exception $e) {
-    http_response_code($e->getCode());
-    echo $e->getMessage();
+    // Đặt mã trạng thái HTTP là 500 nếu có lỗi xảy ra
+    http_response_code(500); 
+    echo "Lỗi: " . $e->getMessage();  // Hiển thị thông báo lỗi chi tiết
+    exit();
 }

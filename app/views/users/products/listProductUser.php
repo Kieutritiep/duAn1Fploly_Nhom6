@@ -62,127 +62,39 @@
             </aside>
             <!-- end aside -->
             <!-- start main -->
-        <main class="p-4 mt-4" style="flex: 0 0 76%;">
-            <div class="row g-4">
-                <div class="col-12 col-md-4">
-                    <a href="" class=" text-decoration-none">
-                        <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
-                            <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="img-fluid product-image">
-                            <div class="text-center mt-4">
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">256GB</span>
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">512GB</span>
-                            </div>
-                            <p class="text-center product-text mt-4 fw-bold">iphone 16 promax</p>
-                            <p class="text-center product-text">34.990.000 <sup>đ</sup></p>
-                        </div>
-                    </a>
+            <main class="p-4 mt-4" style="flex: 0 0 76%;">
+    <div class="row g-4">
+        <?php 
+        if (!empty($products)) {
+            foreach ($products as $product) { 
+            $dungLuongList = explode(',', $product['dungLuong']);
+            $giaList = explode(',', $product['giaBienThe']);
+            $selectedDungLuong = isset($_GET['dungLuong_'.$product['id_sanPham']]) ? $_GET['dungLuong_'.$product['id_sanPham']] : $dungLuongList[0];
+            $selectedPrice = $giaList[array_search($selectedDungLuong, $dungLuongList)];
+        ?>
+        <div class="col-12 col-md-4">
+            <a href="./?act=detailProduct&id=<?php echo $product['id_sanPham']; ?>" class="text-decoration-none">
+                <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
+                    <img src="<?php echo $product['file_anh']; ?>" alt="<?php echo $product['ten_sanPham']; ?>" class="img-fluid product-image">
+                    <div class="text-center mt-4">
+                        <?php foreach ($dungLuongList as $dungLuong) { ?>
+                            <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px; width: 70px; display: inline-block;">
+                                <?php echo $dungLuong; ?>
+                            </span>
+                        <?php } ?>
+                    </div>
+                    <p class="text-center product-text mt-4 fw-bold"><?php echo $product['ten_sanPham']; ?></p>
+                    <p class="text-center mt-2"><?php echo $selectedPrice; ?></p> <!-- Hiển thị giá tương ứng -->
                 </div>
-                <div class="col-12 col-md-4">
-                    <a href="" class=" text-decoration-none">
-                        <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
-                            <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="img-fluid product-image">
-                            <div class="text-center mt-4">
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">256GB</span>
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">512GB</span>
-                            </div>
-                            <p class="text-center product-text mt-4 fw-bold">iphone 16 promax</p>
-                            <p class="text-center product-text">34.990.000 <sup>đ</sup></p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-4">
-                    <a href="" class=" text-decoration-none">
-                        <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
-                            <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="img-fluid product-image">
-                            <div class="text-center mt-4">
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">256GB</span>
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">512GB</span>
-                            </div>
-                            <p class="text-center product-text mt-4 fw-bold">iphone 16 promax</p>
-                            <p class="text-center product-text">34.990.000 <sup>đ</sup></p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-4">
-                    <a href="" class=" text-decoration-none">
-                        <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
-                            <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="img-fluid product-image">
-                            <div class="text-center mt-4">
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">256GB</span>
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">512GB</span>
-                            </div>
-                            <p class="text-center product-text mt-4 fw-bold">iphone 16 promax</p>
-                            <p class="text-center product-text">34.990.000 <sup>đ</sup></p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-4">
-                    <a href="" class=" text-decoration-none">
-                        <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
-                            <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="img-fluid product-image">
-                            <div class="text-center mt-4">
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">256GB</span>
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">512GB</span>
-                            </div>
-                            <p class="text-center product-text mt-4 fw-bold">iphone 16 promax</p>
-                            <p class="text-center product-text">34.990.000 <sup>đ</sup></p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-4">
-                    <a href="" class=" text-decoration-none">
-                        <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
-                            <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="img-fluid product-image">
-                            <div class="text-center mt-4">
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">256GB</span>
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">512GB</span>
-                            </div>
-                            <p class="text-center product-text mt-4 fw-bold">iphone 16 promax</p>
-                            <p class="text-center product-text">34.990.000 <sup>đ</sup></p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-4">
-                    <a href="" class=" text-decoration-none">
-                        <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
-                            <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="img-fluid product-image">
-                            <div class="text-center mt-4">
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">256GB</span>
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">512GB</span>
-                            </div>
-                            <p class="text-center product-text mt-4 fw-bold">iphone 16 promax</p>
-                            <p class="text-center product-text">34.990.000 <sup>đ</sup></p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-4">
-                    <a href="" class=" text-decoration-none">
-                        <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
-                            <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="img-fluid product-image">
-                            <div class="text-center mt-4">
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">256GB</span>
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">512GB</span>
-                            </div>
-                            <p class="text-center product-text mt-4 fw-bold">iphone 16 promax</p>
-                            <p class="text-center product-text">34.990.000<sup>đ</sup></p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-4">
-                    <a href="" class=" text-decoration-none">
-                        <div class="product-card text-white rounded-3 p-3 h-100 d-flex flex-column justify-content-between shadow-sm">
-                            <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="img-fluid product-image">
-                            <div class="text-center mt-4">
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">256GB</span>
-                                <span style="background-color: #1C1C1D; border-radius: 5px; padding: 5px;">512GB</span>
-                            </div>
-                            <p class="text-center product-text mt-4 fw-bold">iphone 16 promax</p>
-                            <p class="text-center product-text">34.990.000<sup>đ</sup></p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </main>
+            </a>
+        </div>
+        <?php } 
+        } else { ?>
+            <p class="text-center text-white">Không có sản phẩm nào để hiển thị.</p>
+        <?php } ?>
+    </div>
+</main>
+
     </div>
     </div>
 <?php 
