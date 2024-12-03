@@ -55,6 +55,7 @@
                         <th class="align-middle">STT</th>
                         <th class="align-middle">TÊN</th>
                         <th class="align-middle">ẢNH</th>
+                        <th class="align-middle">Giá</th>
                         <th class="align-middle">RAM</th>
                         <th class="align-middle">MÀU SẮC</th>
                         <th class="align-middle">DUNG LƯỢNG</th>

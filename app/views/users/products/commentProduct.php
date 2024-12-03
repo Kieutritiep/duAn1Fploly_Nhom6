@@ -156,8 +156,8 @@
 <div class="bg-white"style="min-height:950px;">
     <div class="container">
     <div class="my-4 text-center">
-            <a href="./?act=detailProduct"><button class="mt-5 btn btn-outline-secondary rounded w-25 text-muted hover-border-primary">Thông số kỹ thuật</button></a>
-            <a href="./?act=commentProduct"><button class="mt-5 btn btn-outline-secondary rounded w-25 text-muted hover-border-primary ms-3">Đánh giá sản phẩm</button></a>
+            <a href="./?act=detailProduct&id=<?= htmlspecialchars($_GET['id_sanpham'] ?? 0) ?>"><button class="mt-5 btn btn-outline-secondary rounded w-25 text-muted hover-border-primary">Thông số kỹ thuật</button></a>
+            <a href="./?act=commentProduct&id=<?= htmlspecialchars($_GET['id'] ?? 0) ?>"><button class="mt-5 btn btn-outline-secondary rounded w-25 text-muted hover-border-primary ms-3">Đánh giá sản phẩm</button></a>
         </div>
 
         <!-- Sử dụng d-flex và justify-content-center để căn giữa -->
@@ -187,24 +187,58 @@
                         <p style="font-size:13px;color:#838EA4;"> đã bình luận : 20 giờ trước</p>
                         <hr>
                         <!-- bình luận -->
-                        <!-- bình luận -->
-                        <div class="d-flex">
-                            <p class="fw-bold me-2">Kiều Tiếp</p>  <!-- thay tên khách hàng vào đây -->
-                            <p><i class="fas fa-check-circle" style="color: #FFD700;"></i></p>
-                            <p class="text-danger ms-2">Đã mua tại iPhone Lux</p>
-                        </div>
-                        <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" 
-                        alt="Product 1" class="img-fluid product-image" style="width:70px">
-                        <p class="mt-2">Dùng một thời gian thấy khá ok</p>
-                        <p style="font-size:13px;color:#838EA4;"> đã bình luận : 20 giờ trước</p>
-                        <hr>
-                        <!-- bình luận -->
-                    </div>
-                    <!-- danh sách bình bình luận -->
+                        <div class="comments-section container">
+    <h2 class="mb-4">Bình luận sản phẩm</h2>
+
+    <!-- Hiển thị danh sách bình luận -->
+    <?php if (!empty($comments)): ?>
+        <?php foreach ($comments as $comment): ?>
+            <div class="comment mb-4">
+                <!-- Thông tin khách hàng -->
+                <div class="d-flex align-items-center mb-2">
+                    <p class="fw-bold me-2"><?= htmlspecialchars($comment['ten_khachHang']) ?></p>
+                    <i class="fas fa-check-circle" style="color: #FFD700;"></i>
+                    <p class="text-danger ms-2">Đã mua tại iPhone Lux</p>
+                </div>
+
+                <!-- Ảnh và nội dung bình luận -->
+                <div class="d-flex align-items-start">
+                    <img src="<?= htmlspecialchars($comment['link_anh']) ?>" 
+                         alt="Ảnh sản phẩm" 
+                         class="img-fluid product-image me-3" 
+                         style="width: 70px; height: auto;">
                     <div>
-                        <button class="mt-5 btn btn-outline-secondary hoverViewComment rounded w-25 text-muted">Xem tất cả</button>
-                        <button class="mt-5 btn btn-outline-primary background rounded w-25 ms-3">Viết bình luận</button>
+                        <p><?= htmlspecialchars($comment['noiDung']) ?></p>
+                        <p style="font-size:13px; color:#838EA4;">đã bình luận: <?= htmlspecialchars($comment['thoiGian']) ?></p>
                     </div>
+                </div>
+                <hr>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Chưa có bình luận nào.</p>
+    <?php endif; ?>
+</div>
+     <!-- Form gửi bình luận -->
+     <form action="" method="POST" enctype="multipart/form-data" class="p-3 border rounded mt-4">
+    <input type="hidden" name="id_sanPham" value="<?= htmlspecialchars($_GET['id_sanpham'] ?? 0) ?>">
+    <input type="hidden" name="id_khachHang" value="<?= htmlspecialchars($_SESSION['id_khachHang'] ?? 0) ?>">
+
+    <div class="mb-3">
+        <textarea id="noiDung" name="noiDung" class="form-control" rows="2" placeholder="Nhập bình luận..." required></textarea>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+        <input type="file" id="link_anh" name="link_anh" class="form-control" accept="image/*" style="width: 250px;">
+        <button type="submit" name="submit_comment" class="btn btn-primary btn-sm px-3" style="height: 36px;">Gửi</button>
+    </div>
+</form>
+
+</div>
+
+
+</a>
+
                 </div>
             </div>
         </div>
