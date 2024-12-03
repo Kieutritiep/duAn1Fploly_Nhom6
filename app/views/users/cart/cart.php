@@ -5,15 +5,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/h
     <?php foreach ($cartProducts as $cartProduct) { ?>
         <div class="card container p-3 mb-3" style="max-width: 800px;">
             <div class="d-flex gap-3">
-                <img src="<?php echo $cartProduct['file_anh']; ?>" alt="<?php echo $cartProduct['ten_sanPham']; ?>" class="rounded" style="width: 100px; height: 100px;">
+                <img src="<?php echo $cartProduct['file_anh']; ?>" alt="<?php echo $cartProduct['ten_sanPham'];?>" class="rounded" style="width: 100px; height: 100px;">
                 <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-start mb-2">
-                        <span class="fw-bold"><?php echo $cartProduct['ten_sanPham']; echo $cartProduct['dungLuong'] ?></span>
+                        <span class="fw-bold"><?php echo $cartProduct['ten_sanPham']; ?> <?php echo $cartProduct['dungLuong'] ?></span>
                         <div class="d-flex align-items-center gap-2">
                             <span class="fw-bold text-primary">
                                 <?php echo number_format($cartProduct['gia']); ?><u>đ</u>
                             </span>
-                            <a href="#" class="text-decoration-none">
+                            <a href="./?act=deteteCart&id=<?php echo $cartProduct['id_sanPham'] ?>&idUser=<?php echo $addressUser[0]['id_khachHang']?>" class="text-decoration-none">
                                 <button class="btn-close" aria-label="Close"></button>
                             </a>
                         </div>
@@ -33,92 +33,115 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/h
             </div>
         </div>
     <?php } ?>
-
     <div class="card container p-4 mb-3" style="max-width: 800px;">
         <div class="card-body">
             <form action="./?act=order" method="post">
                 <h5><b>Thông tin khách hàng</b></h5>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="male" value="Anh">
-                    <label class="form-check-label" for="male">Anh</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="isDefault" id="isDefault" value="1" checked>
-                    <label class="form-check-label" for="isDefault">Đặt làm địa chỉ mặc định</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="female" value="Chị">
-                    <label class="form-check-label" for="female">Chị</label>
-                </div>
+                <?php 
+                    if($addressUser){
+                        foreach($addressUser as $address){
+                        // $address['diaChiChiTiet'];
+                        
+                        ?>
+                            <tr>
+                                <td>Tên khách hàng : <?php echo $address['hoVaTen']?></td> <br>
+                                <td>Số điện thoại : <?php echo $address['soDienTHoai']?></td> <br>
+                                <td>Địa chỉ : <?php echo $address['diaChiChiTiet']?></td> <br>
+                                <a href=""><button type="button" class="btn btn-secondary mt-2" style="width:150px; border-radius:8px;">Thay đổi địa chỉ</button></a>
+                                <hr>
+                            </tr>
+                        <?php
+                        
+                    }
+                }else{
+                    ?>
+                        <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="Anh">
+                                <label class="form-check-label" for="male">Anh</label>
+                            </div>
+                            <!-- <div class="form-check">
+                                <input class="form-check-input" type="radio" name="isDefault" id="isDefault" value="1" checked>
+                                <label class="form-check-label" for="isDefault">Đặt làm địa chỉ mặc định</label>
+                            </div> -->
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="Chị">
+                                <label class="form-check-label" for="female">Chị</label>
+                            </div>
 
-                <div class="row mt-3">
-                    <div class="col">
-                        <input class="form-control" type="text" name="nameUser" placeholder="Họ và Tên" required>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <input class="form-control" type="text" name="nameUser" placeholder="Họ và Tên" required>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" type="text" name="phone" placeholder="Số điện thoại" required>
+                                </div>
+                            </div>
+                            <h5 class="mt-4"><b>Địa chỉ người nhận</b></h5>
+                            <div class="row">
+                                <div class="col">
+                                    <input class="form-control" name="city" type="text" placeholder="Thành phố" required>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" name="district" type="text" placeholder="Huyện" required>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <input class="form-control" name="commune" type="text" placeholder="Xã/Phường" required>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" name="detailAddress" type="text" placeholder="Nhập địa chỉ chi tiết" required>
+                                </div>
+                            </div>
+                    <?php
+                }
+                ?>
+                    <div class="mt-2">
+                        <span class="my-2">Chọn phương thức thanh toán</span><br>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="pay" id="pay1" value="Thanh toán khi nhận hàng" required>
+                                <label class="form-check-label" for="pay1">Thanh toán khi nhận hàng</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="pay" id="pay2" value="Thanh toán online">
+                                <label class="form-check-label" for="pay2">Thanh toán online</label>
+                            </div>
+                        </div>
+                            <div class="mt-2">
+                        <input class="form-control" type="text" name="voucher" placeholder="Mã giảm giá (nếu có)">
                     </div>
-                    <div class="col">
-                        <input class="form-control" type="text" name="phone" placeholder="Số điện thoại" required>
+                    <div class="mt-4">
+                        <span>
+                            <strong>Tổng tiền:</strong> <b class="text-danger">
+                                <?php echo number_format($cartProduct['tongTienGioHang']); ?><u>đ</u>
+                            </b>
+                            <input type="hidden" name="totalPrice" value="<?php echo $cartProduct['tongTienGioHang']; ?>">
+                        </span>
+                        <hr>
+                        <p class="mb-0 mb-2 text-red">Tổng : <span class="text-black"><?php echo $cartProduct['tongSoLuongGioHang']; ?></span> sản phẩm</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="agree" required>
+                            <label class="form-check-label" for="agree">
+                                Tôi đồng ý với Chính sách xử lý dữ liệu cá nhân của iPhone Lux
+                            </label>
+                        </div>
                     </div>
-                </div>
-
-                <h5 class="mt-4"><b>Địa chỉ người nhận</b></h5>
-                <div class="row">
-                    <div class="col">
-                        <input class="form-control" name="city" type="text" placeholder="Thành phố" required>
-                    </div>
-                    <div class="col">
-                        <input class="form-control" name="district" type="text" placeholder="Huyện" required>
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col">
-                        <input class="form-control" name="commune" type="text" placeholder="Xã/Phường" required>
-                    </div>
-                    <div class="col">
-                        <input class="form-control" name="detailAddress" type="text" placeholder="Nhập địa chỉ chi tiết" required>
-                    </div>
-                </div>
-
-                <div class="mt-2">
-                    <span class="my-2">Chọn phương thức thanh toán</span><br>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="pay" id="pay1" value="Thanh toán khi nhận hàng" required>
-                        <label class="form-check-label" for="pay1">Thanh toán khi nhận hàng</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="pay" id="pay2" value="Thanh toán online">
-                        <label class="form-check-label" for="pay2">Thanh toán online</label>
-                    </div>
-                </div>
-
-                <div class="mt-2">
-                    <input class="form-control" type="text" name="voucher" placeholder="Mã giảm giá (nếu có)">
-                </div>
-
-                <div class="mt-4">
-                    <span>
-                        <strong>Tổng tiền:</strong> <b class="text-danger">
-                            <?php echo number_format($cartProduct['tongTienGioHang']); ?><u>đ</u>
-                        </b>
-                        <input type="hidden" name="totalPrice" value="<?php echo $cartProduct['tongTienGioHang']; ?>">
-                    </span>
-                    <hr>
-                    <p class="mb-0 mb-2 text-red">Tổng : <span class="text-black"><?php echo $cartProduct['tongSoLuongGioHang']; ?></span> sản phẩm</p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="agree" required>
-                        <label class="form-check-label" for="agree">
-                            Tôi đồng ý với Chính sách xử lý dữ liệu cá nhân của iPhone Lux
-                        </label>
-                    </div>
-                </div>
-
-                <?php foreach ($cartProducts as $cartProduct) { ?>
-                    <input type="hidden" name="idProduct[]" value="<?php echo $cartProduct['id_sanPham']; ?>">
-                    <input type="hidden" name="price[]" value="<?php echo $cartProduct['gia']; ?>">
-                    <input type="hidden" name="quantity[]" value="<?php echo $cartProduct['tongSoLuongSanPham']; ?>">
-                <?php } ?>
-
+                    <?php 
+                        // var_dump($cartProduct);die();
+                    ?>
+                <?php
+            
+                ?>
+                <?php if (!empty($cartProducts)) : ?>
+                    <?php foreach ($cartProducts as $cartProduct) { ?>
+                        <input type="hidden" name="idProduct[]" value="<?php echo $cartProduct['id_sanPham']; ?>">
+                        <input type="hidden" name="price[]" value="<?php echo $cartProduct['gia']; ?>">
+                        <input type="hidden" name="capacity[]" value="<?php echo $cartProduct['dungLuong']; ?>">
+                        <input type="hidden" name="color[]" value="<?php echo $cartProduct['mauSac']; ?>">
+                        <input type="hidden" name="quantity[]" value="<?php echo $cartProduct['tongSoLuongSanPham']; ?>">
+                    <?php } ?>
+                <?php endif; ?>
                 <input type="hidden" name="id_khachHang" value="<?php echo $_SESSION['id_khachHang']; ?>">
-
                 <button class="btn btn-primary w-100 mt-4" style="border: 2px solid blueviolet;">Đặt hàng</button>
             </form>
         </div>

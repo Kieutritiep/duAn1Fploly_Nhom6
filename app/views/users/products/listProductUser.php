@@ -31,6 +31,14 @@
                         <input type="radio" name="product">
                         <p class="text-white mb-0 ms-2">iPhone 12</p>
                     </a>
+                    <a href="" class="d-flex align-items-center p-2 rounded hover-block text-decoration-none">
+                        <input type="radio" name="product">
+                        <p class="text-white mb-0 ms-2">iPhone 12</p>
+                    </a>
+                    <a href="" class="d-flex align-items-center p-2 rounded hover-block text-decoration-none">
+                        <input type="radio" name="product">
+                        <p class="text-white mb-0 ms-2">iPhone 12</p>
+                    </a>
                 </div>
                 <div>
                     <h5 class="text-white">Xắp xếp theo</h5>

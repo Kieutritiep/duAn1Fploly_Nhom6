@@ -72,6 +72,9 @@
             </span>
             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                 <li><a class="dropdown-item" href="./?act=accountManagement">Quản lý tài khoản</a></li>
+                <li><a class="dropdown-item" href="./?act=detailCart&id=<?php echo $_SESSION['id_khachHang'] ?>">Đơn hàng của bạn</a></li>
+                <li><a class="dropdown-item" href="./?act=historyOrderUser&id=<?php echo $_SESSION['id_khachHang'] ?>">Lịch sử mua hàng</a></li>
+                <li><a class="dropdown-item" href="./?act=listOrderUser&id=<?php echo $_SESSION['id_khachHang'] ?>">Đơn hàng của bạn</a></li>
                 <li><a class="dropdown-item" href="./?act=logout" onclick="return confirm('bạn có muốn đăng xuất không');">Đăng xuất</a></li>
         </ul>
     <?php } else { ?>

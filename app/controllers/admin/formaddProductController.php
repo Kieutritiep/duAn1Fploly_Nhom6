@@ -18,13 +18,11 @@
         // Lấy dữ liệu từ form
         $nameProduct = $_POST['nameProduct'];
         $category = $_POST['category'];
-        $priceProducts = $_POST['priceProduct'];
+        $priceProducts = $_POST['price'];
         $capacities = $_POST['capacity'];
         $colors = isset($_POST['color']) ? $_POST['color'] : [];
-        $rams = isset($_POST['ram']) ? $_POST['ram'] : [];
         $description = $_POST['description'];
-        $quantity = $_POST['quantity'];
-        $status = $_POST['status']; 
+        $quantitys = $_POST['quantity'];
         $display = $_POST['display'];
         $mainImage = $_FILES['mainImage'];
         $folder = './uploads/';
@@ -51,12 +49,7 @@
                 $file_subImage[] = $file_name;
             }
         }
-        $validStatus = ['trang chủ', 'sản phẩm mới ra mắt', 'sản phẩm cũ']; 
-        if (!in_array($status, $validStatus)) {
-            echo "Trạng thái sản phẩm không hợp lệ!";
-            return;
-        }
-        $result = $this->addProduct->addProductModels($nameProduct, $category, $priceProducts, $colors, $rams, $description, $quantity, $capacities, $status, $display, $file_save, $file_subImage);
+        $result = $this->addProduct->addProductModels($nameProduct, $category, $priceProducts, $colors, $description, $quantitys, $capacities, $display, $file_save, $file_subImage);
         if ($file_save) {
             if ($result) {
                 echo "Thêm sản phẩm thành công";

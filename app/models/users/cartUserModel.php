@@ -25,9 +25,17 @@
                 return false;
             }
         }
-        // public function getAddressUser($userID){
-
-        // }
+        public function getAddressUser($userID){
+            try {
+                $sql = "SELECT * FROM diachi WHERE id_khachHang = :id_khachHang LIMIT 1";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute([':id_khachHang' => $userID]);
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+            } catch (PDOException $e) {
+                echo "Error: ". $e->getMessage();
+            }
+        }
         public function getProductByUserID($userIDCart) {
             try {
                 $sql = "SELECT 
@@ -36,20 +44,20 @@
                             MAX(tb_anh.file_anh) AS file_anh,
                             tb_gioHang.dungLuong,
                             tb_gioHang.mauSac,
-                            SUM(tb_gioHang.soLuong) AS tongSoLuongSanPham, -- Tổng số lượng của từng sản phẩm
-                            MAX(tb_gioHang.gia) AS gia, -- Giá đại diện của sản phẩm
+                            -- tb_gioHang.ram,
+                            SUM(tb_gioHang.soLuong) AS tongSoLuongSanPham,
+                            SUM(tb_gioHang.gia) AS gia,
                             (SELECT SUM(soLuong) 
                              FROM tb_gioHang 
-                             WHERE id_khachHang = :id_khachHang) AS tongSoLuongGioHang, -- Tổng số lượng toàn giỏ hàng
+                             WHERE id_khachHang = :id_khachHang) AS tongSoLuongGioHang,
                             (SELECT SUM(soLuong * gia) 
                              FROM tb_gioHang 
-                             WHERE id_khachHang = :id_khachHang) AS tongTienGioHang -- Tổng tiền toàn giỏ hàng
+                             WHERE id_khachHang = :id_khachHang) AS tongTienGioHang 
                         FROM tb_gioHang
                         INNER JOIN tb_sanPham ON tb_sanPham.id_sanPham = tb_gioHang.id_sanPham
                         INNER JOIN tb_anh ON tb_anh.id_sanPham = tb_sanPham.id_sanPham AND tb_anh.loaiAnh = 'chinh'
                         WHERE tb_gioHang.id_khachHang = :id_khachHang
                         GROUP BY tb_sanPham.id_sanPham, tb_gioHang.dungLuong, tb_gioHang.mauSac";
-                
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute([':id_khachHang' => $userIDCart]);
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -58,6 +66,19 @@
                 echo "Error: " . $e->getMessage();
             }
         }
+        public function deteteCartMode($idProductCart){
+            try{
+                $sql = "DELETE FROM tb_giohang WHERE id_sanPham = :id_sanPham ";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute([':id_sanPham' => $idProductCart]);
+                return true;
+            }
+            catch(PDOException $e){
+                echo "Error: ". $e->getMessage();
+            }
+        }
+
+}
         
         
-    }
+

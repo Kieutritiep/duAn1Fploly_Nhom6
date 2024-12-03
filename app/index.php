@@ -49,6 +49,7 @@ require_once './models/users/detailProductUserModel.php';
 require_once './models/users/registerModel.php';
 require_once './models/users/commentProductUserModel.php';
 require_once './models/users/oderProductModel.php';
+require_once './models/users/listOrderUserModel.php';
 // Require tất cả file Controllers users
 require_once './controllers/users/listProductUserController.php';
 require_once './controllers/users/loginController.php';
@@ -60,6 +61,7 @@ require_once './controllers/users/detailProductUserController.php';
 require_once './controllers/users/registerController.php';
 require_once './controllers/users/commentProductUserController.php';
 require_once './controllers/users/oderProductController.php';
+require_once './controllers/users/listOrderUserController.php';
 
 // Lấy giá trị act từ URL
 $act = $_GET['act'] ?? '/';
@@ -89,6 +91,9 @@ try {
             'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
             'formUpdateVoucher' => (new listVoucherAdminController())->formUpdateVoucher(),
             'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
+            'orderAdmin' => (new orderAdminController())->orderAdmin(),
+            'detailOrderAdmin' => (new detailOrderAdminController())->detailOrderAdmin(),
+            'updateStatus' => (new detailOrderAdminController())->updateStatusOrder(),
             default => throw new Exception('404 Not Found', 404),
         };
     } else {
@@ -103,9 +108,12 @@ try {
             'register' => (new registerController())->register(),
             'logout' => (new loginController())->logout(),
             'cart' => (new cartUserController())->cartUser(),
+            'deteteCart' => (new cartUserController())->deteteCart(),
             'addCart' => (new cartUserController())->addCart(),
             'detailCart' => (new detailcartUserController())->detailCartUser(),
             'order' => (new orderProductController())->order(),
+            'listOrderUser' => (new listOrderProductController())->listorderUser(),
+            'historyOrderUser' => (new listOrderProductController())->historyOrderUser(),
             'cartEmpty' => (new cartEmptyUserController())->cartEmpty(),
             'infomationUser' => (new infomationUserController())->infomationUser(),
             default => throw new Exception('404 Not Found', 404),

@@ -55,7 +55,6 @@
                         <th class="align-middle">STT</th>
                         <th class="align-middle">TÊN</th>
                         <th class="align-middle">ẢNH</th>
-                        <th class="align-middle">RAM</th>
                         <th class="align-middle">MÀU SẮC</th>
                         <th class="align-middle">DUNG LƯỢNG</th>
                         <th class="align-middle">THAO TÁC</th>
@@ -69,7 +68,6 @@
                             <td class="align-middle">
                                 <img style="width: 160px; height: 100;" src="<?php echo $product['file_anh'] ?>" alt="">
                             </td>
-                            <td class="align-middle"><?php echo $product['ram'] ?></td>
                             <td class="align-middle"><?php echo $product['mauSac'] ?></td>
                             <td class="align-middle"><?php echo $product['dungLuong'] ?></td>
                             <td class="align-middle">

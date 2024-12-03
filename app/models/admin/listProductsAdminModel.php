@@ -11,13 +11,11 @@ class listProductAdminModel{
             tb_sanPham.ten_sanPham,
             MAX(tb_sanPham.moTa) AS moTa,
             MAX(tb_anh.file_anh) AS file_anh,
-            GROUP_CONCAT(DISTINCT tb_ram.ram) AS ram,
             GROUP_CONCAT(DISTINCT tb_dungLuong.dungLuong) AS dungLuong,
             GROUP_CONCAT(DISTINCT tb_mausac.ten_mauSac) AS mauSac
             FROM tb_sanPham
             INNER JOIN tb_bienthesanpham ON tb_sanPham.id_sanPham = tb_bienthesanpham.id_sanPham
             INNER JOIN tb_anh ON tb_sanPham.id_sanPham = tb_anh.id_sanPham AND tb_anh.loaiAnh = 'chinh'
-            INNER JOIN tb_ram ON tb_bienthesanpham.id_ram = tb_ram.id_ram
             INNER JOIN tb_dungluong ON tb_bienthesanpham.id_dungLuong = tb_dungluong.id_dungLuong
             INNER JOIN tb_mausac ON tb_bienthesanpham.id_mauSac = tb_mausac.id_mauSac
             GROUP BY tb_sanPham.id_sanPham";
