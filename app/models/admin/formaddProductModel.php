@@ -57,8 +57,6 @@ class addProductModel {
     public function addProductModels($nameProduct, $category, $priceProducts, $colors, $rams, $description, $quantity, $capacities, $status, $display, $file_save, $file_subImage) {
         try {
             $this->conn->beginTransaction();
-    
-            // Bước 1: Thêm thông tin sản phẩm chính vào bảng tb_sanPham
             $sql = "INSERT INTO tb_sanPham 
                     (ten_sanPham, id_danhMuc, moTa, soLuong, trangThaiSanPham, hienThi) 
                     VALUES 
@@ -73,8 +71,6 @@ class addProductModel {
                 ':trangThaiSanPham' => $status,
                 ':hienThi' => $display,
             ]);
-    
-            // Lấy ID của sản phẩm vừa thêm
             $productID = $this->conn->lastInsertId();
     
             if (is_array($colors)) {
@@ -82,7 +78,6 @@ class addProductModel {
                     foreach ($rams as $ramID) {
                         foreach ($capacities as $capacityID){
                             foreach($priceProducts as $priceProduct){
-                                // Insert vào bảng tb_sanPhamBiếnThe
                                 $sql = "INSERT INTO tb_bienthesanpham (id_sanPham, id_mauSac, id_dungLuong, id_ram,giaBienThe) 
                                 VALUES (:id_sanPham, :id_mauSac, :id_dungLuong, :id_ram,:giaBienThe)";
                                 $stmt = $this->conn->prepare($sql);

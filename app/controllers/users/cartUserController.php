@@ -17,6 +17,7 @@
                 $color = $_POST['color'];
                 $price = $_POST['price'];
                 $userID = $_POST['userID'];
+                // $quantity = $_POST['quantity'];
                 // $action = $_POST['buyNow'];
                 // $actionAdd = $_POST['addToCart'];
                 // var_dump($_POST);die();

@@ -56,7 +56,11 @@ require_once './models/users/cartEmptyModel.php';
 require_once './models/users/informationUserModel.php';
 require_once './models/users/detailProductUserModel.php';
 require_once './models/users/registerModel.php';
+
 require_once './models/users/commentProductUserModel.php'; // Model bình luận người dùng
+
+require_once './models/users/commentProductUserModel.php';
+require_once './models/users/oderProductModel.php';
 
 // Require tất cả file Controllers users
 require_once './controllers/users/listProductUserController.php';
@@ -67,7 +71,12 @@ require_once './controllers/users/cartEmptyController.php';
 require_once './controllers/users/informationUserController.php';
 require_once './controllers/users/detailProductUserController.php';
 require_once './controllers/users/registerController.php';
+
 require_once './controllers/users/commentProductUserController.php'; // Controller bình luận người dùng
+
+require_once './controllers/users/commentProductUserController.php';
+require_once './controllers/users/oderProductController.php';
+
 
 $commentModel = new commentProductUserModel($db); 
 $commentModel = new commentProductUserModel($db);
@@ -120,6 +129,7 @@ try {
             'logout' => (new loginController())->logout(),
             'cart' => (new cartUserController())->cartUser(),
             'detailCart' => (new detailcartUserController())->detailCartUser(),
+            'order' => (new orderProductController())->order(),
             'cartEmpty' => (new cartEmptyUserController())->cartEmpty(),
             'infomationUser' => (new infomationUserController())->infomationUser(),
             default => throw new Exception('404 Not Found', 404),
