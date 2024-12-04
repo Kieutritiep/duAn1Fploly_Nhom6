@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/header.php';
 ?>
 <?php if (isset($_SESSION['id_khachHang'])) { ?>
+    <?php if (!empty($cartProducts)): ?>
     <?php foreach ($cartProducts as $cartProduct) { ?>
         <div class="card container p-3 mb-3" style="max-width: 800px;">
             <div class="d-flex gap-3">
@@ -146,10 +147,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/h
             </form>
         </div>
     </div>
-<?php } else { ?>
-    <div>Cần đăng nhập để hiển thị giỏ hàng của bạn</div>
-<?php } ?>
-
+    <?php else: ?>
+        <div class="container text-center mt-5">
+            <i class="fa-solid fa-cart-shopping fs-1 text-white"></i><hr>
+            <span class="text-white">Giỏ hàng của bạn chưa có sản phẩm nào!</span>
+        </div>
+    <?php endif; ?>
+    <?php } else { ?>
+        <div>Cần đăng nhập để hiển thị giỏ hàng của bạn</div>
+    <?php } ?>
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/footter.php';
 ?>

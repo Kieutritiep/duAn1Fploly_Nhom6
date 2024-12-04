@@ -44,38 +44,38 @@
             <!-- Main content nơi đổ dữ liệu -->
             <section class="content">
             <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>STT</th>
-                <th>Mã đơn hàng</th>
-                <th>Ngày đặt hàng</th>
-                <th>Tổng tiền</th>
-                <th>Hình thức thanh toán</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php 
-                foreach($orders as $key => $order){
+            <thead class="table-dark">
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã đơn hàng</th>
+                        <th>Ngày đặt hàng</th>
+                        <th>Tổng tiền</th>
+                        <th>Hình thức thanh toán</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        foreach($orders as $key => $order){
+                            ?>
+                                <tr>
+                                    <td><?php echo ++$key ?></td>
+                                    <td><?php echo $order['ma_hoa_don'] ?></td>
+                                    <td><?php echo $order['ngayDatHang'] ?></td>
+                                    <td><?php echo number_format($order['tongTien']) ?>đ</td>
+                                    <td><?php echo $order['hinhThucThanhToan'] ?></td>
+                                    <td><?php echo $order['trangThai'] ?></td>
+                                    <td>
+                                    <a href="./?act=admin/detailOrderAdmin&id=<?php echo $order['id_donhang'] ?>"><button type="submit" class="btn btn-info"><i class="fa-solid fa-eye"></i></button></a>
+                                    </td>
+                                    </td>
+                                </tr>
+                            <?php
+                        }
                     ?>
-                        <tr>
-                            <td><?php echo ++$key ?></td>
-                            <td><?php echo $order['ma_hoa_don'] ?></td>
-                            <td><?php echo $order['ngayDatHang'] ?></td>
-                            <td><?php echo number_format($order['tongTien']) ?>đ</td>
-                            <td><?php echo $order['hinhThucThanhToan'] ?></td>
-                            <td><?php echo $order['trangThai'] ?></td>
-                            <td>
-                            <a href="./?act=admin/detailOrderAdmin&id=<?php echo $order['id_donhang'] ?>"><button type="submit" class="btn btn-info"><i class="fa-solid fa-eye"></i></button></a>
-                            </td>
-                            </td>
-                        </tr>
-                    <?php
-                }
-            ?>
-        </tbody>
-    </table>
+                </tbody>
+        </table>
             </section>
             <!-- /.content nơi đổ dữ liệu-->
         </div>

@@ -22,6 +22,5 @@
                         window.location.href = './?act=admin/detailOrderAdmin&id=" . $idDonHang . "';
                       </script>";
             }
-            
         }
     }

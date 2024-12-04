@@ -6,10 +6,9 @@
         }
         public function listorderUser(){
             $idUser = $_GET['id'];
-            $listOrders = $this->listOrderUser->getAllOrderUser($idUser);
-            var_dump($listOrders);die();
+            $listOrdersUsers = $this->listOrderUser->getAllOrderUser($idUser);
+            // var_dump($listOrdersUsers);die();
             require_once './views/users/cart/listOlderUser.php';
-            // require_once './views/users/layout/header.php';
         }
         public function historyOrderUser(){
             $idUser = $_GET['id'];

@@ -12,8 +12,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/h
   ?>
     <p class="fw-semibold mt-3 ml-3">Cảm ơn <span class="fw-bold">
       <?php
-        $gender = $detailCart['gioiTinh'] === 'Nam' ? 'Anh' : 'Chị'; 
-        echo $gender .' '. $detailCart['hoVaTen']; 
+        $gender = $detailOrdersUsers['address']['gioiTinh'] === 'Nam' ? 'Anh' : 'Chị'; 
+        echo $gender .' '. $detailOrdersUsers['address']['hoVaTen']; 
       ?></span> đã cho iPhone Lux cơ hội phục vụ</p>
     <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center position-relative">
@@ -38,7 +38,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/h
       return ($currentOrder >= $order) ? 'bg-warning' : 'bg-secondary';
     }
   
-    $currentStatus = $detailCart['trangThai']; 
+    $currentStatus = $detailOrdersUsers['products'][0]['trangThai'];
     $currentOrder = $orderStartus[$currentStatus] ?? 0; 
     ?>
 
@@ -82,11 +82,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/h
     </div>
   </div>
     <div class="p-3 mb-3 bg-light rounded">
-        <p><strong>Mã đơn hàng :</strong><span class="text-primary fw-bold"><?php echo ' '.$detailCart['ma_hoa_don'] ?></span></p>
-        <p><strong>Người nhận :</strong> <?php echo ' '. $detailCart['hoVaTen'] ?></p>
-        <p><strong>Giao đến :</strong><?php echo ' '.$detailCart['diaChiChiTiet'] ?></p>
-        <p><strong>Tổng tiền :</strong> <?php echo ' '. number_format($detailCart['tongTien'], 0, ',', '.'); ?>VNĐ</p>
-        <p><strong>Phương thức thanh toán :</strong> <?php echo ' '.$detailCart['hinhThucThanhToan'] ?></p>
+        <p><strong>Mã đơn hàng :</strong><span class="text-primary fw-bold"><?php echo ' '.$detailOrdersUsers['address']['ma_hoa_don'] ?></span></p>
+        <p><strong>Người nhận :</strong> <?php echo ' '. $detailOrdersUsers['address']['hoVaTen']; ?></p>
+        <p><strong>Giao đến :</strong><?php echo ' '.$detailOrdersUsers['address']['diaChiChiTiet']; ?></p>
+        <p><strong>Tổng tiền :</strong> <?php echo ' '. number_format($detailOrdersUsers['products'][0]['tongTien'], 0, ',', '.'); ?>VNĐ</p>
+        <p><strong>Phương thức thanh toán :</strong> <?php echo ' '.$detailOrdersUsers['products'][0]['hinhThucThanhToan'] ?></p>
         <?php 
         if ($currentOrder === $orderStartus['Chờ vận chuyển'] || $orderStartus['Đang giao'] || $orderStartus['Đã giao']) {
         ?>
@@ -106,16 +106,27 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/h
     </div>
     <p class="text-center">Khi cần hỗ trợ vui lòng gọi <strong class="text-danger">1900969642</strong> (8h00-21h30)</p>
     <hr>
-    <h5>Thời gian nhận hàng</h5>
-    <div class="product-info d-flex align-items-center p-3 mt-3 border rounded">
-        <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product Image" style="width: 80px; height: 80px; object-fit: cover;">
-        <div class="ml-3">
-            <p><strong>iphone 16 promax 128GB</strong></p>
-            <p><strong>Màu:</strong> Titan Sa Mạc</p>
-            <p><strong>Số lượng:</strong> 1</p>
-            <p><strong>Thời gian nhận hàng:</strong> Từ 3-5 ngày kể từ ngày đặt hàng</p>
+    <div class="d-flex">
+      <span class="fw-bold">Thời gian nhận hàng :</span>
+      <p>Từ 3-5 ngày kể từ ngày đặt hàng</p>
+    </div>
+    <?php foreach ($detailOrdersUsers['products'] as $product) { ?>
+    <div class="product-info row align-items-center p-3 mt-3 border rounded shadow-sm">
+        <!-- Hình ảnh sản phẩm -->
+        <div class="col-12 col-md-3 text-center">
+            <img src="<?php echo $product['file_anh']; ?>" alt="Product Image" class="img-fluid rounded" style="max-width: 120px; height: auto; object-fit: cover;">
+        </div>
+        <!-- Thông tin sản phẩm -->
+        <div class="col-12 col-md-9">
+            <h5 class="fw-bold mb-2"><?php echo $product['ten_sanPham']; ?></h5>
+            <p class="mb-2"><strong>Giá:</strong> <?php echo number_format($product['gia'], 0, ',', '.'); ?> VNĐ</p>
+            <p class="mb-2"><strong>Màu:</strong> <?php echo $product['mauSac']; ?></p>
+            <p class="mb-2"><strong>Dung lượng:</strong> <?php echo $product['dungLuong']; ?></p>
+            <p class="mb-2"><strong>Số lượng:</strong> <?php echo $product['soLuong']; ?></p>
         </div>
     </div>
+<?php } ?>
+
     <div class="text-center mt-4">
         <button class="btn btn-outline-primary " style="color: black;">Về trang chủ iPhone Lux</button>
     </div>

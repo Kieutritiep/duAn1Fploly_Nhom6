@@ -34,7 +34,7 @@
         <div class="flex-grow-1">
             <ul class="d-flex list-unstyled m-0 justify-content-center">
                 <li class="mx-3">
-                    <a href="#" class="menu-link text-reset text-decoration-none px-3 py-2 d-block">Trang Chủ</a>
+                    <a href="./?act=/" class="menu-link text-reset text-decoration-none px-3 py-2 d-block">Trang Chủ</a>
                 </li>
                 <li class="mx-3">
                     <a href="#" class="menu-link text-reset text-decoration-none px-3 py-2 d-block">Sản phẩm mới ra mắt</a>
@@ -72,9 +72,8 @@
             </span>
             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                 <li><a class="dropdown-item" href="./?act=accountManagement">Quản lý tài khoản</a></li>
-                <li><a class="dropdown-item" href="./?act=detailCart&id=<?php echo $_SESSION['id_khachHang'] ?>">Đơn hàng của bạn</a></li>
                 <li><a class="dropdown-item" href="./?act=historyOrderUser&id=<?php echo $_SESSION['id_khachHang'] ?>">Lịch sử mua hàng</a></li>
-                <li><a class="dropdown-item" href="./?act=listOrderUser&id=<?php echo $_SESSION['id_khachHang'] ?>">Đơn hàng của bạn</a></li>
+                <li><a class="dropdown-item" href="./?act=listOrderUser&id=<?php echo $_SESSION['id_khachHang'] ?>">Đơn hàng của tôi</a></li>
                 <li><a class="dropdown-item" href="./?act=logout" onclick="return confirm('bạn có muốn đăng xuất không');">Đăng xuất</a></li>
         </ul>
     <?php } else { ?>
