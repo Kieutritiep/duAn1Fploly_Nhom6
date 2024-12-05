@@ -5,6 +5,10 @@
             $this->detailCart = new detailCartUserModel;
         }
         public function detailCartUser(){
-            require_once './views/users/cart/detailcart.php';
+            $idOrder = $_GET['id'];
+            $detailOrdersUsers = $this->detailCart->getDetailOrder($idOrder);
+            // var_dump($detailOrdersUsers);die();
+            // var_dump($orders);die();
+            require_once './views/users/cart/detailCart.php';
         }
     }
