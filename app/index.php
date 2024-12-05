@@ -115,6 +115,7 @@ try {
             'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
             'comments' => (new commentsAdminController($adminCommentModel))->listComments(), // Quản lý bình luận
             'deleteComment' => (new commentsAdminController($adminCommentModel))->deleteComment(),
+            'updateStatus' => (new detailOrderAdminController())->updateStatusOrder(),
             default => throw new Exception('404 Not Found', 404),
         };
     } else {
@@ -122,14 +123,19 @@ try {
         match ($act) {
             '/' => (new listProductUsersController())->listProductUser(),
             'detailProduct' => (new detailProductController())->detailProduct(),
-            'commentProduct' => (new commentProductUserController($commentModel))->displayComments(),
+            'commentProduct' => (new commentProductController())->commentProductUser(),
+            // 'detailProduct' => (new detailProductController())->voucherProduct(),
             'formLogin' => (new loginController())->formlogin(),
             'login' => (new loginController())->login(),
             'register' => (new registerController())->register(),
             'logout' => (new loginController())->logout(),
             'cart' => (new cartUserController())->cartUser(),
+            'deteteCart' => (new cartUserController())->deteteCart(),
+            'addCart' => (new cartUserController())->addCart(),
             'detailCart' => (new detailcartUserController())->detailCartUser(),
             'order' => (new orderProductController())->order(),
+            'listOrderUser' => (new listOrderProductController())->listorderUser(),
+            'historyOrderUser' => (new listOrderProductController())->historyOrderUser(),
             'cartEmpty' => (new cartEmptyUserController())->cartEmpty(),
             'infomationUser' => (new infomationUserController())->infomationUser(),
             default => throw new Exception('404 Not Found', 404),
