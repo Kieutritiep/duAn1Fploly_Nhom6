@@ -6,9 +6,11 @@
         }
         public function detailProduct(){
             $id = $_GET["id"];
+
             $detailProducts = $this->detailProductUser->getAlldetailProduct($id);
-            $vouchers = $this->detailProductUser->voucher();
             // var_dump($detailProducts);die();    
-            require_once './views/users/products/detailController.php';
+            $vouchers = $this->detailProductUser->voucher();
+            require_once './views/users/products/detailProductUser.php';
+
         }
     }   

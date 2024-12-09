@@ -9,7 +9,7 @@ class commentsAdminController {
     // Hiển thị danh sách bình luận
     public function listComments() {
         $comments = $this->model->getAllComments();
-        require_once './views/admin/variant/listComments.php';
+        require_once './views/admin/products/listComments.php';
     }
 
     // Xóa bình luận

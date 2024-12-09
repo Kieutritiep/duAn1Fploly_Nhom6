@@ -5,25 +5,27 @@
         }
         public function order(){
             if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $id_khachHang = $_POST['id_khachHang'];
-                $gender = $_POST['gender'];
-                $name = $_POST['nameUser'];
-                $phone = $_POST['phone'];
-                $city = $_POST['city'];
-                $district = $_POST['district'];
-                $commune = $_POST['commune'];
-                $detailAddress = $_POST['detailAddress'];
-                $voucher = $_POST['voucher'];
-                $pay = $_POST['pay'];
-                $totalPrice = $_POST['totalPrice'];
-                $idProduct = $_POST['idProduct'];
-                $quantity = $_POST['quantity'];
-                $price = $_POST['price'];
+                $id_khachHang = $_POST['id_khachHang'] ?? NULL;
+                $gender = $_POST['gender'] ?? NULL;
+                $name = $_POST['nameUser'] ?? NULL;
+                $phone = $_POST['phone'] ?? NULL;
+                $city = $_POST['city'] ?? NULL;
+                $district = $_POST['district'] ?? NULL;
+                $commune = $_POST['commune'] ?? NULL;
+                $detailAddress = $_POST['detailAddress'] ?? NULL;
+                $voucher = $_POST['voucher'] ?? NULL;
+                $pay = $_POST['pay'] ?? NULL;
+                $totalPrice = $_POST['totalPrice'] ?? NULL;
+                $idProduct = $_POST['idProduct'] ?? NULL;
+                $quantity = $_POST['quantity'] ?? NULL;
+                $price = $_POST['price'] ?? NULL;
+                $capacity = $_POST['capacity'] ?? NULL;
+                $color = $_POST['color'] ?? NULL;
                 $isDefault = $_POST['isDefault'] ?? 0;
                 // print_r($_POST);die();
-                $result = $this->orderProduct->olderProducts($id_khachHang,$gender, $name, $phone, $city, $district, $commune, $detailAddress, $isDefault,$voucher,$pay,$totalPrice,$idProduct,$price,$quantity);
+                $result = $this->orderProduct->olderProducts($id_khachHang,$gender, $name, $phone, $city, $district, $commune, $detailAddress, $isDefault,$voucher,$pay,$totalPrice,$idProduct,$price,$quantity,$capacity,$color);
                 if($result){
-                    echo "Đặt hàng thành công";
+                    header('Location: ./?act=detailCart&id_khachHang&id=' . $id_khachHang);
                 }else{
                     echo "Đặt hàng thất bại";
                 }

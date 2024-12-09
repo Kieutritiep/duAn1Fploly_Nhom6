@@ -4,6 +4,17 @@ session_start(); // Khởi động session
 // Require các file cần thiết
 require_once './commons/env.php'; // Khai báo biến môi trường
 require_once './commons/function.php'; // Hàm hỗ trợ
+require_once './commons/Database.php';
+
+
+// Kết nối cơ sở dữ liệu
+try {
+    $dsn = "mysql:host=" . DB_HOST . ";post=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    $db = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Kết nối thất bại: " . $e->getMessage());
+}
 
 // Kết nối cơ sở dữ liệu
 try {
@@ -30,6 +41,7 @@ require_once './controllers/admin/odersAdminController.php';
 require_once './controllers/admin/ramAdminController.php';
 require_once './controllers/admin/formaddProductController.php';
 require_once './controllers/admin/listVoucherAdminController.php';
+require_once './controllers/admin/StatisticsAdminController.php';
 
 // Require tất cả file Models admin
 require_once './models/admin/homeAdminModel.php';
@@ -46,6 +58,7 @@ require_once './models/admin/odersAdminModel.php';
 require_once './models/admin/ramAdminModel.php';
 require_once './models/admin/formaddProductModel.php';
 require_once './models/admin/listVoucherAdminModel.php';
+require_once './models/admin/StatisticsAdminModel.php';
 
 // Require tất cả file Models users
 require_once './models/users/listProductUserModel.php';
@@ -61,7 +74,6 @@ require_once './models/users/commentProductUserModel.php'; // Model bình luận
 
 require_once './models/users/commentProductUserModel.php';
 require_once './models/users/oderProductModel.php';
-
 // Require tất cả file Controllers users
 require_once './controllers/users/listProductUserController.php';
 require_once './controllers/users/loginController.php';
@@ -76,9 +88,9 @@ require_once './controllers/users/commentProductUserController.php'; // Controll
 
 require_once './controllers/users/commentProductUserController.php';
 require_once './controllers/users/oderProductController.php';
+require_once './controllers/users/listOrderUserController.php';
 
 
-$commentModel = new commentProductUserModel($db); 
 $commentModel = new commentProductUserModel($db);
 $adminCommentModel = new commentsAdminModel($db);
 // Lấy giá trị act từ URL
@@ -113,9 +125,12 @@ try {
             'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
             'formUpdateVoucher' => (new listVoucherAdminController())->formUpdateVoucher(),
             'updateVoucher' => (new listVoucherAdminController())->updateVoucher(),
-            'comments' => (new commentsAdminController($adminCommentModel))->listComments(), // Quản lý bình luận
-            'deleteComment' => (new commentsAdminController($adminCommentModel))->deleteComment(),
+            'orderAdmin' => (new orderAdminController())->orderAdmin(),
+            'detailOrderAdmin' => (new detailOrderAdminController())->detailOrderAdmin(),
             'updateStatus' => (new detailOrderAdminController())->updateStatusOrder(),
+            'comments' => (new commentsAdminController($adminCommentModel))->listComments(), 
+            'deleteComment' => (new commentsAdminController($adminCommentModel))->deleteComment(),
+            'statistics' => (new StatisticsAdminController())->index(),
             default => throw new Exception('404 Not Found', 404),
         };
     } else {
@@ -123,7 +138,7 @@ try {
         match ($act) {
             '/' => (new listProductUsersController())->listProductUser(),
             'detailProduct' => (new detailProductController())->detailProduct(),
-            'commentProduct' => (new commentProductController())->commentProductUser(),
+            'commentProduct' => (new commentProductUserController($commentModel))->displayComments(),
             // 'detailProduct' => (new detailProductController())->voucherProduct(),
             'formLogin' => (new loginController())->formlogin(),
             'login' => (new loginController())->login(),
@@ -142,8 +157,9 @@ try {
         };
     }
 } catch (Exception $e) {
-    // Đặt mã trạng thái HTTP là 500 nếu có lỗi xảy ra
-    http_response_code(500); 
-    echo "Lỗi: " . $e->getMessage();  // Hiển thị thông báo lỗi chi tiết
+    $httpCode = is_int($e->getCode()) && $e->getCode() >= 100 && $e->getCode() < 600 ? $e->getCode() : 500;
+    http_response_code($httpCode);
+    echo $e->getMessage();
+
     exit();
 }

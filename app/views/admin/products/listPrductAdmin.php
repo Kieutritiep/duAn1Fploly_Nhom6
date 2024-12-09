@@ -70,7 +70,6 @@
                             <td class="align-middle">
                                 <img style="width: 160px; height: 100;" src="<?php echo $product['file_anh'] ?>" alt="">
                             </td>
-                            <td class="align-middle"><?php echo $product['ram'] ?></td>
                             <td class="align-middle"><?php echo $product['mauSac'] ?></td>
                             <td class="align-middle"><?php echo $product['dungLuong'] ?></td>
                             <td class="align-middle">

@@ -9,7 +9,8 @@ class ListCustomersAdminController {
     // Hiển thị danh sách khách hàng
     public function listcustomer() {
         $khachHangs = $this->model->getAllKhachHang();
-        require './views/admin/variant/listcustomer.php';
+        require './views/admin/customer/listcustomer.php';
+
     }
 
 
@@ -22,7 +23,8 @@ class ListCustomersAdminController {
         if (!$khachHang) {
             die("Khách hàng không tồn tại!");
         }
-        require './views/admin/variant/editcustomer.php';
+        require './views/admin/customer/editcustomer.php';
+
     }
 
     // Xử lý sửa khách hàng

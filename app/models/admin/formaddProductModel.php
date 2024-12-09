@@ -54,45 +54,48 @@ class addProductModel {
              return []; 
         }
     }
-    public function addProductModels($nameProduct, $category, $priceProducts, $colors, $rams, $description, $quantity, $capacities, $status, $display, $file_save, $file_subImage) {
+    public function addProductModels($nameProduct, $category, $priceProducts, $colors, $description, $quantitys, $capacities, $display, $file_save, $file_subImage) {
         try {
             $this->conn->beginTransaction();
             $sql = "INSERT INTO tb_sanPham 
-                    (ten_sanPham, id_danhMuc, moTa, soLuong, trangThaiSanPham, hienThi) 
+                    (ten_sanPham, id_danhMuc, moTa, hienThi) 
                     VALUES 
-                    (:ten_sanPham, :id_danhMuc, :moTa, :soLuong, :trangThaiSanPham, :hienThi)";
+                    (:ten_sanPham, :id_danhMuc, :moTa, :hienThi)";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([
                 ':ten_sanPham' => $nameProduct,
                 ':id_danhMuc' => $category,
                 // ':gia' => $price,
                 ':moTa' => $description,
-                ':soLuong' => $quantity,
-                ':trangThaiSanPham' => $status,
                 ':hienThi' => $display,
             ]);
             $productID = $this->conn->lastInsertId();
     
-            if (is_array($colors)) {
-                foreach ($colors as $colorID) {
-                    foreach ($rams as $ramID) {
-                        foreach ($capacities as $capacityID){
-                            foreach($priceProducts as $priceProduct){
-                                $sql = "INSERT INTO tb_bienthesanpham (id_sanPham, id_mauSac, id_dungLuong, id_ram,giaBienThe) 
-                                VALUES (:id_sanPham, :id_mauSac, :id_dungLuong, :id_ram,:giaBienThe)";
+            foreach ($colors as $colorID) {
+                // foreach ($rams as $ramID) {
+                    foreach ($capacities as $capacityID) {
+                        foreach ($priceProducts as $priceProduct) {
+                            foreach ($quantitys as $quantity) {
+                                $sql = "INSERT INTO tb_bienthesanpham 
+                                        (id_sanPham, id_mauSac, id_dungLuong, soLuong, giaBienThe) 
+                                        VALUES 
+                                        (:id_sanPham, :id_mauSac, :id_dungLuong, :soLuong, :giaBienThe)";
                                 $stmt = $this->conn->prepare($sql);
                                 $stmt->execute([
-                                    ':id_sanPham' => $productID, 
+                                    ':id_sanPham' => $productID,
                                     ':id_mauSac' => $colorID,
                                     ':id_dungLuong' => $capacityID,
-                                    ':id_ram' => $ramID,
+                                    // ':id_ram' => $ramID,
+                                    ':soLuong' => $quantity,
                                     ':giaBienThe' => $priceProduct,
                                 ]);
                             }
                         }
                     }
-                }
+                // }
             }
+            
+            
             $sql = "INSERT INTO tb_anh (id_sanPham, file_anh, loaiAnh) VALUES (:id_sanPham, :file_anh, :loaiAnh)";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([

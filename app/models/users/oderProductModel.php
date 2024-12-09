@@ -3,36 +3,43 @@ class orderProductModel {
     public $conn;
 
     public function __construct() {
-        $this->conn = connectDB(); // Kết nối đến cơ sở dữ liệu
+        $this->conn = connectDB(); 
     }
 
-    public function olderProducts($id_khachHang, $gender, $name, $phone, $city, $district, $commune, $detailAddress, $isDefault, $voucher, $pay, $totalPrice, $idProduct, $price, $quantity) {
+    public function olderProducts($id_khachHang,$gender, $name, $phone, $city, $district, $commune, $detailAddress, $isDefault,$voucher,$pay,$totalPrice,$idProduct,$price,$quantity,$capacity,$color){
         try {
-            if ($gender === 'Anh') {
-                $gender = 'Nam';
-            } elseif ($gender === 'Chị') {
-                $gender = 'Nữ';
-            }
-            if ($isDefault === null) {
-                $isDefault = 1;
-            }
-            $sql = "INSERT INTO diachi (id_khachHang, soDienTHoai, gioiTinh, thanhPho, quanHuyen, xaPhuong, diaChiChiTiet, hoVaTen, isDefault)
-                    VALUES (:id_khachHang, :soDienTHoai, :gioiTinh, :thanhPho, :quanHuyen, :xaPhuong, :diaChiChiTiet, :hoVaTen, :isDefault)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute([
-                ':id_khachHang' => $id_khachHang,
-                ':soDienTHoai' => $phone,
-                ':gioiTinh' => $gender,
-                ':thanhPho' => $city,
-                ':quanHuyen' => $district,
-                ':xaPhuong' => $commune,
-                ':diaChiChiTiet' => $detailAddress,
-                ':hoVaTen' => $name,
-                ':isDefault' => $isDefault
-            ]);
+            $sqlCheckAddress = "SELECT * FROM diachi WHERE id_khachHang = :id_khachHang";
+            $stmtCheck = $this->conn->prepare($sqlCheckAddress);
+            $stmtCheck->execute([':id_khachHang' => $id_khachHang]);
+            $check = $stmtCheck->fetch();
 
-            $idAddress = $this->conn->lastInsertId(); // ID của địa chỉ vừa thêm
-
+            if (!$check) { 
+                if ($gender === 'Anh') {
+                    $gender = 'Nam';
+                } elseif ($gender === 'Chị') {
+                    $gender = 'Nữ';
+                }
+                if ($isDefault === null) {
+                    $isDefault = 1;
+                }
+                $sql = "INSERT INTO diachi (id_khachHang, soDienTHoai, gioiTinh, thanhPho, quanHuyen, xaPhuong, diaChiChiTiet, hoVaTen, isDefault)
+                        VALUES (:id_khachHang, :soDienTHoai, :gioiTinh, :thanhPho, :quanHuyen, :xaPhuong, :diaChiChiTiet, :hoVaTen, :isDefault)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute([
+                    ':id_khachHang' => $id_khachHang,
+                    ':soDienTHoai' => $phone,
+                    ':gioiTinh' => $gender,
+                    ':thanhPho' => $city,
+                    ':quanHuyen' => $district,
+                    ':xaPhuong' => $commune,
+                    ':diaChiChiTiet' => $detailAddress,
+                    ':hoVaTen' => $name,
+                    ':isDefault' => $isDefault
+                ]);
+                    $idAddress = $this->conn->lastInsertId();
+                } else { 
+                    $idAddress = $check['id_diaChi'];
+                }
             $sqlCheckMDH = "SELECT hauTo FROM madonhang WHERE tienTo = 'DH' ORDER BY hauTo DESC LIMIT 1";
             $stmtCheckMDH = $this->conn->prepare($sqlCheckMDH);
             $stmtCheckMDH->execute();
@@ -54,35 +61,49 @@ class orderProductModel {
                 ':tongTien' => $totalPrice,
                 ':id_khachHang' => $id_khachHang,
                 ':hinhThucThanhToan' => $pay,
-                ':trangThai' => 'chờ xác nhận', 
+                ':trangThai' => 'đã đặt hàng', 
                 ':id_giamGia' => $voucher,
                 ':id_madonhang' => $maDonHangValue,
             ]);
             $idOlder = $this->conn->lastInsertId(); 
             if (is_array($idProduct)) {
+                // Lặp qua từng sản phẩm trong mảng
                 foreach ($idProduct as $index => $productId) {
-
-                    $stmtOderDetail = $this->conn->prepare("INSERT INTO tb_chitietdonhang(id_donhang, id_sanPham, soLuong, gia, tongTien)
-                                                           VALUES (:id_donhang, :id_sanPham, :soLuong, :gia, :tongTien)");
+                    $stmtOderDetail = $this->conn->prepare("INSERT INTO tb_chitietdonhang(
+                        id_donhang, id_sanPham, soLuong, gia, tongTien, dungLuong, mauSac
+                    ) VALUES (
+                        :id_donhang, :id_sanPham, :soLuong, :gia, :tongTien, :dungLuong, :mauSac
+                    )");
+        
                     $stmtOderDetail->execute([
                         ':id_donhang' => $idOlder,
                         ':id_sanPham' => (int)$productId,
                         ':soLuong' => (int)$quantity[$index],
-                        ':gia' => $price[$index], 
-                        ':tongTien' => $price[$index] * $quantity[$index] 
+                        ':gia' => $price[$index],
+                        ':tongTien' => $price[$index] * $quantity[$index],
+                        ':dungLuong' => $capacity[$index],
+                        ':mauSac' => $color[$index],
                     ]);
                 }
             } else {
-                $stmtOderDetail = $this->conn->prepare("INSERT INTO tb_chitietdonhang(id_donhang, id_sanPham, soLuong, gia, tongTien)
-                                                       VALUES (:id_donhang, :id_sanPham, :soLuong, :gia, :tongTien)");
+                // Trường hợp chỉ có một sản phẩm
+                $stmtOderDetail = $this->conn->prepare("INSERT INTO tb_chitietdonhang(
+                    id_donhang, id_sanPham, soLuong, gia, tongTien, dungLuong, mauSac
+                ) VALUES (
+                    :id_donhang, :id_sanPham, :soLuong, :gia, :tongTien, :dungLuong, :mauSac
+                )");
+        
                 $stmtOderDetail->execute([
                     ':id_donhang' => $idOlder,
                     ':id_sanPham' => (int)$idProduct,
                     ':soLuong' => (int)$quantity,
-                    ':gia' => $price, 
-                    ':tongTien' => $price * $quantity 
+                    ':gia' => $price,
+                    ':tongTien' => $price * $quantity,
+                    ':dungLuong' => $capacity,
+                    ':mauSac' => $color,
                 ]);
             }
+        
             return true;
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();

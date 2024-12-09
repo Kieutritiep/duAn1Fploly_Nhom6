@@ -13,6 +13,7 @@
                             MAX(tb_anh.file_anh) AS file_anh,
                             GROUP_CONCAT(DISTINCT tb_dungLuong.dungLuong) AS dungLuong,
                             GROUP_CONCAT(DISTINCT tb_bienthesanpham.giaBienThe) AS giaBienThe,
+                            GROUP_CONCAT(DISTINCT tb_bienthesanpham.soLuong) AS soLuong,
                             GROUP_CONCAT(DISTINCT tb_mausac.ten_mauSac) AS tenMau,
                             GROUP_CONCAT(DISTINCT tb_mausac.maMau) AS maMau
                         FROM tb_sanPham
