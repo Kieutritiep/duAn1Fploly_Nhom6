@@ -4,6 +4,17 @@ session_start(); // Khởi động session
 // Require các file cần thiết
 require_once './commons/env.php'; // Khai báo biến môi trường
 require_once './commons/function.php'; // Hàm hỗ trợ
+require_once './commons/Database.php';
+
+
+// Kết nối cơ sở dữ liệu
+try {
+    $dsn = "mysql:host=" . DB_HOST . ";post=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    $db = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Kết nối thất bại: " . $e->getMessage());
+}
 
 // Require tất cả file Controllers admin
 require_once './controllers/admin/homeAdmimController.php';
@@ -21,6 +32,7 @@ require_once './controllers/admin/odersAdminController.php';
 require_once './controllers/admin/ramAdminController.php';
 require_once './controllers/admin/formaddProductController.php';
 require_once './controllers/admin/listVoucherAdminController.php';
+require_once './controllers/admin/StatisticsAdminController.php';
 
 // Require tất cả file Models admin
 require_once './models/admin/homeAdminModel.php';
@@ -37,6 +49,7 @@ require_once './models/admin/odersAdminModel.php';
 require_once './models/admin/ramAdminModel.php';
 require_once './models/admin/formaddProductModel.php';
 require_once './models/admin/listVoucherAdminModel.php';
+require_once './models/admin/StatisticsAdminModel.php';
 
 // Require tất cả file Models users
 require_once './models/users/listProductUserModel.php';
@@ -63,6 +76,9 @@ require_once './controllers/users/commentProductUserController.php';
 require_once './controllers/users/oderProductController.php';
 require_once './controllers/users/listOrderUserController.php';
 
+
+$commentModel = new commentProductUserModel($db);
+$adminCommentModel = new commentsAdminModel($db);
 // Lấy giá trị act từ URL
 $act = $_GET['act'] ?? '/';
 
@@ -78,12 +94,16 @@ try {
             'addProduct' => (new addProductAdminController())->addProduct(),
             'getAllram' => (new addProductAdminController())->getAllram(),
             'getAllCapacity' => (new addProductAdminController())->getAllCapacity(),
-            'getAllColor' => (new addProductAdminController())->getAllColor(),
+            'color' => (new colorAdminController())->listColors(),
+            'color/add' => (new colorAdminController())->addColor(),
+            'color/edit' => (new colorAdminController())->editColor(),
+            'color/delete' => (new colorAdminController())->deleteColor(),  
             'fromAdd_categorys' => (new categorysAdminController())->fromAddcategorys(),
             'categorys' => (new categorysAdminController())->categorys(),
             'delete_categorys' => (new categorysAdminController())->deleteCagorys(),
             'add_Category' => (new categorysAdminController())->addCategory(),
-            'listcustomers' => (new listcustomersAdminController())->listcustomers(),
+            'listcustomers' => (new ListCustomersAdminController(new listcustomersAdminModel($db)))->listcustomer(),
+            'editcustomers' => (new ListCustomersAdminController(new listcustomersAdminModel($db)))->edit($_GET['id']),
             'listVoucher' => (new listVoucherAdminController())->listVoucher(),
             'formAddVoucher' => (new listVoucherAdminController())->formAddVoucher(),
             'addVoucher' => (new listVoucherAdminController())->addVoucher(),
@@ -94,6 +114,9 @@ try {
             'orderAdmin' => (new orderAdminController())->orderAdmin(),
             'detailOrderAdmin' => (new detailOrderAdminController())->detailOrderAdmin(),
             'updateStatus' => (new detailOrderAdminController())->updateStatusOrder(),
+            'comments' => (new commentsAdminController($adminCommentModel))->listComments(), 
+            'deleteComment' => (new commentsAdminController($adminCommentModel))->deleteComment(),
+            'statistics' => (new StatisticsAdminController())->index(),
             default => throw new Exception('404 Not Found', 404),
         };
     } else {
@@ -101,7 +124,7 @@ try {
         match ($act) {
             '/' => (new listProductUsersController())->listProductUser(),
             'detailProduct' => (new detailProductController())->detailProduct(),
-            'commentProduct' => (new commentProductController())->commentProductUser(),
+            'commentProduct' => (new commentProductUserController($commentModel))->displayComments(),
             // 'detailProduct' => (new detailProductController())->voucherProduct(),
             'formLogin' => (new loginController())->formlogin(),
             'login' => (new loginController())->login(),
@@ -120,7 +143,8 @@ try {
         };
     }
 } catch (Exception $e) {
-    http_response_code($e->getCode() ?: 500);
+    $httpCode = is_int($e->getCode()) && $e->getCode() >= 100 && $e->getCode() < 600 ? $e->getCode() : 500;
+    http_response_code($httpCode);
     echo $e->getMessage();
     exit();
 }

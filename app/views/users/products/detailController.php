@@ -70,11 +70,13 @@
 
     .custom-btn:hover {
         background-color: #5a6268;
+        /* Màu xám đậm hơn khi hover */
     }
 
     /* Màu mặc định của nút dung lượng */
     .dung-luong-btn {
         background-color: #2E2E2E;
+        /* Màu khi không chọn */
         color: white;
         border: none;
         padding: 10px 20px;
@@ -84,6 +86,7 @@
 
     .dung-luong-btn.active {
         background-color: #1F1F20;
+        /* Màu khi chọn */
     }
 </style>
 <!-- Bootstrap Carousel -->
@@ -94,26 +97,24 @@
             <div id="phoneCarousel" class="carousel slide" data-bs-ride="carousel">
                 <!-- Indicators -->
                 <div class="carousel-indicators">
-                    <?php
-                    $list_images = explode(',', $detailProducts['file_anh']);
-                    foreach ($list_images as $index => $image):
-                    ?>
-                        <button type="button" data-bs-target="#phoneCarousel" data-bs-slide-to="<?php echo $index; ?>" class="<?php echo $index === 0 ? 'active' : ''; ?>" aria-current="<?php echo $index === 0 ? 'true' : 'false'; ?>" aria-label="Slide <?php echo $index + 1; ?>"></button>
-                    <?php endforeach; ?>
-                </div>
-                <!-- Slides -->
-                <div class="carousel-inner">
-                    <?php
-                    $isActive = true;
-                    foreach ($list_images as $image): ?>
-                        <div class="carousel-item <?php echo $isActive ? 'active' : ''; ?>">
-                            <img src="<?php echo trim($image); ?>" alt="Product Image" class="d-block w-100 img-fluid">
-                        </div>
-                        <?php $isActive = false; ?>
-                    <?php endforeach; ?>
+                    <button type="button" data-bs-target="#phoneCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#phoneCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#phoneCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
                 </div>
 
-                <!-- Controls -->
+                <!-- Slides -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 1" class="d-block w-100 img-fluid">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 2" class="d-block w-100 img-fluid">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./public/images/iphone-16-pro-sa-mac-650x650.png" alt="Product 3" class="d-block w-100 img-fluid">
+                    </div>
+                </div>
+                <!-- Slides -->
                 <button class="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#phoneCarousel" data-bs-slide="prev">
                     <i class="fa-sharp fa-solid fa-arrow-left"></i>
                     <span class="visually-hidden">Previous</span>
@@ -127,134 +128,129 @@
         <!-- slide show -->
         <!-- content -->
         <div class="col-md-6 text-white">
-            <form action="./?act=addCart" method="post">
+            <?php
+            if (isset($detailProducts['dungLuong']) && isset($detailProducts['giaBienThe'])) {
+                $dungLuongList = explode(',', $detailProducts['dungLuong']);
+                $giaList = explode(',', $detailProducts['giaBienThe']);
+            } else {
+                $dungLuongList = [];
+                $giaList = [];
+            }
+            ?>
+            <!-- Hiển thị tên sản phẩm và dung lượng mặc định -->
+            <h1 id="productTitle"><?php echo $detailProducts['ten_sanPham'] . ' ' . ($dungLuongList[0] ?? ''); ?></h1>
+            <h2 id="priceProductVariant">
                 <?php
-                // Tách danh sách dung lượng, giá và số lượng
-                $dungLuongList = isset($detailProducts['dungLuong']) ? explode(',', $detailProducts['dungLuong']) : [];
-                $giaList = isset($detailProducts['giaBienThe']) ? explode(',', $detailProducts['giaBienThe']) : [];
-                $quantityList = isset($detailProducts['soLuong']) ? explode(',', $detailProducts['soLuong']) : [];
-
-                // Tách danh sách màu sắc
-                $colorCodes = explode(',', $detailProducts['maMau']);
-                $colorNames = array_map('trim', explode(',', $detailProducts['tenMau']));
-                $colors = array_combine($colorCodes, $colorNames);
-
-                // Ghép số lượng với mã màu
-                $colorQuantities = array_combine(array_keys($colors), $quantityList);
-
-                // Xác định giá trị mặc định
-                $defaultDungLuong = $dungLuongList[0] ?? '';
-                $defaultPrice = $giaList[0] ?? 0;
-                $defaultColorCode = array_key_first($colors);
-                $defaultColorName = $colors[$defaultColorCode] ?? 'Không xác định';
-                $defaultQuantity = $colorQuantities[$defaultColorCode] ?? 0;
+                // Kiểm tra nếu $dungLuongList và $giaList không rỗng
+                if (!empty($dungLuongList) && !empty($giaList)) {
+                    // Dung lượng và giá mặc định là phần tử đầu tiên
+                    $defaultDungLuong = $dungLuongList[0];
+                    $defaultPrice = $giaList[0];
+                    // Hiển thị giá mặc định
+                    echo number_format($defaultPrice) . " VNĐ";
+                } else {
+                    // Nếu không có dữ liệu, hiển thị thông báo lỗi
+                    echo "Thông tin không có sẵn.";
+                }
                 ?>
-
-                <!-- Hiển thị tên sản phẩm và giá mặc định -->
-                <h1 id="productTitle"><?php echo $detailProducts['ten_sanPham'] . ' ' . $defaultDungLuong; ?></h1>
-                <h2 id="priceProductVariant"><?php echo number_format($defaultPrice) . " VNĐ"; ?></h2>
-                <p class="fw-bold mt-3">Số lượng: <span id="colorQuantityDisplay"><?php echo $defaultQuantity; ?></span></p>
-
-                <!-- Dung lượng -->
-                <p class="mt-3">Dung Lượng</p>
-                <div class="d-flex">
-                    <?php
-                    if (count($dungLuongList) === count($giaList)) {
-                        foreach ($dungLuongList as $index => $dungLuong) {
-                            $price = $giaList[$index];
-                            $activeClass = ($dungLuong == $defaultDungLuong) ? 'active' : '';
-                            echo '<button class="btn custom-btn me-2 dung-luong-btn my-3 mt-2 ' . $activeClass . '"
+            </h2>
+            <p class="mt-3">Dung Lượng</p>
+            <div class="d-flex">
+                <?php
+                // Kiểm tra và hiển thị các nút dung lượng với giá tương ứng
+                if (count($dungLuongList) === count($giaList)) {
+                    foreach ($dungLuongList as $index => $dungLuong) {
+                        $price = $giaList[$index];
+                        // Kiểm tra xem dung lượng này có phải là mặc định hay không, nếu có thêm lớp 'active'
+                        $activeClass = ($dungLuong == $defaultDungLuong) ? 'active' : '';
+                        echo '<button class="btn custom-btn me-2 dung-luong-btn my-3 ' . $activeClass . '"
                             data-price="' . $price . '"
-                            data-dungLuong="' . $dungLuong . '"
-                            onclick="updatePrice(this, event)">
-                            ' . $dungLuong . '
-                        </button>';
-                        }
-                    } else {
-                        echo '<p class="text-danger">Dữ liệu dung lượng và giá không khớp.</p>';
+                            data-dungLong="' . $dungLuong . '"
+                            onclick="updatePrice(this)">
+                          ' . $dungLuong . '
+                      </button>';
                     }
+                } else {
+                    echo '<p class="text-danger">Dữ liệu dung lượng và giá không khớp.</p>';
+                }
+                ?>
+            </div>
+            <!-- Đổ dữ liệu cho màu -->
+            <?php
+            $colorCodes = explode(',', $detailProducts['maMau']);
+            $colorNames = array_map('trim', explode(',', $detailProducts['tenMau']));
+            $colors = array_combine($colorCodes, $colorNames);
+            ?>
+            <div class="d-flex">
+                <?php foreach ($colors as $code => $name): ?>
+                    <?php
+                    $defaultColorCode = array_key_first($colors);
+                    // $defaultColorCode = array_key_first($colors);
+                    $defaultColorName = $colors[$defaultColorCode];
                     ?>
-                </div>
+                    <button
+                        class="btn rounded-circle me-2"
+                        style="width: 40px; height: 40px; background-color: #<?php echo $code; ?>"
+                        onclick="showColorName('<?php echo $name; ?>')">
+                    </button>
 
-                <!-- Màu sắc -->
-                <p class="mt-2">Chọn Màu</p>
-                <div class="d-flex">
-                    <?php foreach ($colors as $code => $name): ?>
-                        <button
-                            class="btn rounded-circle me-2"
-                            style="width: 40px; height: 40px; background-color: #<?php echo $code; ?>"
-                            data-quantity="<?php echo $colorQuantities[$code] ?? 0; ?>"
-                            onclick="showColorInfo('<?php echo $name; ?>', '<?php echo $colorQuantities[$code] ?? 0; ?>', event)">
-                        </button>
-                    <?php endforeach; ?>
-                </div>
-                <p class="fw-bold mt-3">Màu: <span id="colorNameDisplay"><?php echo $defaultColorName; ?></span></p>
-
-                <!-- Khuyến mãi -->
-                <div class="mt-4 voucher">
-                    <p class="fw-bold">Khuyến mãi</p>
-                    <p>
-                        <?php echo $vouchers['ten_chuongTrinh']; ?> <br>
-                        Ngày bắt đầu: <?php echo $vouchers['ngayBatDau']; ?> <br>
-                        Ngày kết thúc: <?php echo $vouchers['ngayKetThuc']; ?> <br>
-                        Trạng thái: <?php echo $vouchers['trangThai']; ?>
-                    </p>
-                    <hr>
-                    <p>
-                        Nhập mã <strong><?php echo $vouchers['ma_giamGia']; ?></strong> để được giảm <strong><?php echo number_format($vouchers['soTienGiamGia']); ?> VNĐ</strong> <br>
-                        Áp dụng cho những đơn hàng trên <strong><?php echo number_format($vouchers['soTienToiThieu']); ?> VNĐ</strong>
-                    </p>
-                </div>
-
-                <!-- Mua hàng -->
+                <?php endforeach; ?>
+            </div>
+            <p class="fw-bold mt-3">Màu: <span id="colorNameDisplay"><?php echo $defaultColorName ?></span></p>
+            <!-- khuyến mãi -->
+            <div class="mt-4 voucher">
+                <p class="fw-bold">Khuyến mãi</p>
+                <p>
+                    <?php echo $vouchers['ten_chuongTrinh'] ?> <br>
+                    ngày bắt đầu : <?php echo $vouchers['ngayBatDau'] ?> <br>
+                    ngày kết thúc :<?php echo $vouchers['ngayKetThuc'] ?> <br>
+                    Trạng thái : <?php echo $vouchers['trangThai'] ?>
+                </p>
+                <hr>
+                <p>.Nhập mã <?php echo $vouchers['ma_giamGia'] ?> để được giảm <?php echo $vouchers['soTienGiamGia'] ?>VNĐ <br> áp dụng cho những đơn hàng trên <?php echo $vouchers['soTienToiThieu'] ?>VNĐ</p>
+            </div>
+            <!-- khuyến mãi -->
+            <!-- Mua hàng -->
+            <form action="" method="post">
                 <div class="d-flex mt-3">
-                    <button type="submit" name="buyNow" class="btn btn-primary rounded-1">Mua ngay</button>
-                    <button type="submit" name="addToCart" class="btn btn-secondary rounded-1 ms-2">Thêm vào giỏ hàng</button>
+                    <button type="submit" class="btn btn-primary rounded-1">Mua ngay</button>
+                    <button type="button" class="btn btn-secondary rounded-1 ms-2">Thêm vào giỏ hàng</button>
                 </div>
-
-                <!-- Các input ẩn để gửi dữ liệu lên server -->
-                <input type="hidden" name="capacity" value="<?php echo $defaultDungLuong; ?>" id="inputDungLuong">
-                <input type="hidden" name="color" value="<?php echo $defaultColorName; ?>" id="inputTenMau">
-                <input type="hidden" name="id_sanPham" value="<?php echo $detailProducts['id_sanPham']; ?>">
-                <input type="hidden" name="price" value="<?php echo $defaultPrice; ?>" id="inputPrice">
-                <input type="hidden" name="userID" value="<?php echo $_SESSION['id_khachHang']; ?>">
             </form>
+            <!-- Mua hàng -->
+            <div class="mt-3 text-white small my-3">
+                <div><i class="fas fa-box"></i> Bộ sản phẩm gồm: Hộp, Sách hướng dẫn, Cáp, Cây lấy sim</div>
+                <div><i class="fas fa-sync-alt"></i> Hư gì đổi nấy 12 tháng tại 3053 siêu thị trên toàn quốc</div>
+                <div><i class="fas fa-shipping-fast"></i> Giao hàng nhanh toàn quốc</div>
+                <div><i class="fas fa-phone-volume"></i> Tổng đài tư vấn miễn phí 24/7: 1800.1763</div>
+            </div>
         </div>
-
-        <script>
-            // Cập nhật giá và dung lượng khi người dùng chọn dung lượng
-            function updatePrice(button, event) {
-                event.preventDefault();
-
-                var dungLuong = button.getAttribute('data-dungLuong');
-                var price = button.getAttribute('data-price');
-
-                document.getElementById('productTitle').textContent = "<?php echo $detailProducts['ten_sanPham']; ?>" + ' ' + dungLuong;
-                document.getElementById('priceProductVariant').textContent = new Intl.NumberFormat().format(price) + " VNĐ";
-
-                document.getElementById('inputDungLuong').value = dungLuong;
-                document.getElementById('inputPrice').value = price;
-            }
-
-            // Cập nhật tên màu và số lượng khi người dùng chọn màu
-            function showColorInfo(colorName, quantity, event) {
-                event.preventDefault();
-
-                document.getElementById('colorNameDisplay').textContent = colorName;
-                document.getElementById('colorQuantityDisplay').textContent = quantity;
-
-                document.getElementById('inputTenMau').value = colorName;
-            }
-        </script>
-
     </div>
 </div>
+<script>
+    function updatePrice(button) {
+        const selectedPrice = button.getAttribute('data-price');
+        const selectedCapacity = button.getAttribute('data-dungLong');
+        document.getElementById('priceProductVariant').innerText = `${parseInt(selectedPrice).toLocaleString()} VNĐ`;
+        document.getElementById('productTitle').innerText = `<?php echo $detailProducts['ten_sanPham']; ?> ${selectedCapacity}`;
+        document.querySelectorAll('.dung-luong-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+    }
+
+    function showColorName(colorName, button) {
+        const defaultColor = document.getElementById('colorNameDisplay').innerText;
+        if (defaultColor !== colorName) {
+            document.getElementById('colorNameDisplay').innerText = '';
+        }
+        document.getElementById('colorNameDisplay').innerText = colorName;
+    }
+</script>
 <!-- thông số và bình luận -->
 <div class="bg-white">
     <div class="container">
         <div class="my-4 text-center">
-            <a href="./?act=detailProduct&id=<?php echo $detailProducts['id_sanPham'] ?>"><button class="mt-5 btn btn-outline-secondary rounded w-25 text-muted hover-border-primary">Thông số kỹ thuật</button></a>
-            <a href="./?act=commentProduct&id_sanpham=<?php echo $detailProducts['id_sanPham'] ?>"><button class="mt-5 btn btn-outline-secondary rounded w-25 text-muted hover-border-primary ms-3">Đánh giá sản phẩm</button></a>
+            <a href="./?act=detailProduct&id=<?= htmlspecialchars($_GET['id'] ?? 0) ?>"><button class="mt-5 btn btn-outline-secondary rounded w-25 text-muted hover-border-primary">Thông số kỹ thuật</button></a>
+            <a href="./?act=commentProduct&id_sanpham=<?= htmlspecialchars($_GET['id'] ?? 0) ?>"><button class="mt-5 btn btn-outline-secondary rounded w-25 text-muted hover-border-primary ms-3">Đánh giá sản phẩm</button></a>
         </div>
 
         <!-- Sử dụng d-flex và justify-content-center để căn giữa -->
