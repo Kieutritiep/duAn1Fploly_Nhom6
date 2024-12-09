@@ -237,6 +237,7 @@
         button.classList.add('active');
     }
 
+
     function showColorName(colorName, button) {
         const defaultColor = document.getElementById('colorNameDisplay').innerText;
         if (defaultColor !== colorName) {
@@ -245,7 +246,6 @@
         document.getElementById('colorNameDisplay').innerText = colorName;
     }
 </script>
-<!-- thông số và bình luận -->
 <div class="bg-white">
     <div class="container">
         <div class="my-4 text-center">

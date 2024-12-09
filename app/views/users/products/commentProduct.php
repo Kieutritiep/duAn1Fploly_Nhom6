@@ -246,10 +246,40 @@
                     </a>
 
                 </div>
+                <hr>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Chưa có bình luận nào.</p>
+    <?php endif; ?>
+</div>
+     <!-- Form gửi bình luận -->
+     <form action="" method="POST" enctype="multipart/form-data" class="p-3 border rounded mt-4">
+    <input type="hidden" name="id_sanPham" value="<?= htmlspecialchars($_GET['id_sanpham'] ?? 0) ?>">
+    <input type="hidden" name="id_khachHang" value="<?= htmlspecialchars($_SESSION['id_khachHang'] ?? 0) ?>">
+
+    <div class="mb-3">
+        <textarea id="noiDung" name="noiDung" class="form-control" rows="2" placeholder="Nhập bình luận..." required></textarea>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+        <input type="file" id="link_anh" name="link_anh" class="form-control" accept="image/*" style="width: 250px;">
+        <button type="submit" name="submit_comment" class="btn btn-primary btn-sm px-3" style="height: 36px;">Gửi</button>
+    </div>
+</form>
+
+</div>
+
+
+</a>
+
+                </div>
             </div>
         </div>
     </div>
 </div>
 <!-- footer -->
+
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/baseDuanpoly/app/views/users/layout/footter.php'; ?>
+
 <!-- footer -->

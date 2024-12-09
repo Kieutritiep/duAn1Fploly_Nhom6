@@ -16,6 +16,15 @@ try {
     die("Kết nối thất bại: " . $e->getMessage());
 }
 
+// Kết nối cơ sở dữ liệu
+try {
+    $dsn = "mysql:host=" . DB_HOST . ";post=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    $db = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Kết nối thất bại: " . $e->getMessage());
+}
+
 // Require tất cả file Controllers admin
 require_once './controllers/admin/homeAdmimController.php';
 require_once './controllers/admin/capacityAdminController.php';
@@ -60,9 +69,11 @@ require_once './models/users/cartEmptyModel.php';
 require_once './models/users/informationUserModel.php';
 require_once './models/users/detailProductUserModel.php';
 require_once './models/users/registerModel.php';
+
+require_once './models/users/commentProductUserModel.php'; // Model bình luận người dùng
+
 require_once './models/users/commentProductUserModel.php';
 require_once './models/users/oderProductModel.php';
-require_once './models/users/listOrderUserModel.php';
 // Require tất cả file Controllers users
 require_once './controllers/users/listProductUserController.php';
 require_once './controllers/users/loginController.php';
@@ -72,6 +83,9 @@ require_once './controllers/users/cartEmptyController.php';
 require_once './controllers/users/informationUserController.php';
 require_once './controllers/users/detailProductUserController.php';
 require_once './controllers/users/registerController.php';
+
+require_once './controllers/users/commentProductUserController.php'; // Controller bình luận người dùng
+
 require_once './controllers/users/commentProductUserController.php';
 require_once './controllers/users/oderProductController.php';
 require_once './controllers/users/listOrderUserController.php';
@@ -97,7 +111,7 @@ try {
             'color' => (new colorAdminController())->listColors(),
             'color/add' => (new colorAdminController())->addColor(),
             'color/edit' => (new colorAdminController())->editColor(),
-            'color/delete' => (new colorAdminController())->deleteColor(),  
+            'color/delete' => (new colorAdminController())->deleteColor(),
             'fromAdd_categorys' => (new categorysAdminController())->fromAddcategorys(),
             'categorys' => (new categorysAdminController())->categorys(),
             'delete_categorys' => (new categorysAdminController())->deleteCagorys(),
@@ -146,5 +160,6 @@ try {
     $httpCode = is_int($e->getCode()) && $e->getCode() >= 100 && $e->getCode() < 600 ? $e->getCode() : 500;
     http_response_code($httpCode);
     echo $e->getMessage();
+
     exit();
 }
